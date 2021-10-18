@@ -1,0 +1,26 @@
+.navigation-bar {
+	margin: 10px 0;
+	text-align: left;
+	padding: 10px;
+}
+
+.navigation-bar ul {
+	list-style: none;
+	margin: 0;
+}
+
+.navigation-bar li {
+	display: inline;
+	margin: 0 10px;
+}
+
+
+.navigation-bar a {
+	background-color: #000;
+	color: #fff;
+	text-decoration: none;
+	font-weight: 800;
+	font-size: 18px;
+	padding: 10px;
+	border: 1px solid white;
+}

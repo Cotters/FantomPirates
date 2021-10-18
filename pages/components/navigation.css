@@ -1,0 +1,14 @@
+body {
+	height: 20px;
+	background-color: #000;
+	color: #fff;
+}
+
+ul {
+	list-style: inline;
+	background-color: #000;
+}
+
+a {
+	color: greenyellow;
+}
