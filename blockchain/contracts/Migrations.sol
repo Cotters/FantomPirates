@@ -1,13 +1,9 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity >=0.4.22 <0.9.0;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-
-contract Pirate is ERC721 {
+contract Migrations {
   address public owner = msg.sender;
-
-  constructor() ERC721("FantomPirate", "PRT") {}
-
+  uint public last_completed_migration;
 
   modifier restricted() {
     require(
@@ -17,8 +13,7 @@ contract Pirate is ERC721 {
     _;
   }
 
-  function mint() public {
-
+  function setCompleted(uint completed) public restricted {
+    last_completed_migration = completed;
   }
-  
 }
