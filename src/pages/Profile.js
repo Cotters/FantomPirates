@@ -41,24 +41,22 @@ export default class Profile extends Component {
 		const account = web3.currentProvider.selectedAddress;
 		if (account == null) return;
 		try {
-			const numberOfPiratesOwned = await gameItems.methods.balanceOf(this.state.account, 0).call();
-			console.log(numberOfPiratesOwned);
-			const successMessage = "Pirates owned returned!"
-			this.setState({numberOfPiratesOwned, successMessage})
+			const numberOfPiratesOwned = await gameItems.methods.balanceOf(account, 0).call();
+			this.setState({ numberOfPiratesOwned })
 		} catch (error) {
 			console.error(error);
 		}
 	}
 
 	async handlePirateButtonPressed() {
-		console.log("Minting from " + this.state.account);
 		try {
     	await game.methods.mintPirate().send({from:this.state.account});
 		} catch(error) {
 			console.error(error);
 			const errorDataObject = JSON.parse(error.message.substring(24).trim()).data;
 			const key = Object.keys(errorDataObject)[0];
-    	const errorMessage = errorDataObject[key].reason
+			const errorMessage = errorDataObject[key].reason;
+    	// const errorMessage = (errorDataObject == null) ? error.message : errorDataObject[key].reason;
 			this.setState({ errorMessage });
 		}
   }
