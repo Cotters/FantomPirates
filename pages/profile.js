@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import MintPirateButton from './components/MintPirateButton';
+import NumberOfOwnedPirates from './components/NumberOfOwnedPirates';
 
 import web3 from '../blockchain/web3';
 import game from '../blockchain/game';
@@ -37,6 +38,8 @@ export default class Profile extends Component {
 	}
 
 	async loadNumberOfPirates() {
+		const account = web3.currentProvider.selectedAddress;
+		if (account == null) return;
 		try {
 			const numberOfPiratesOwned = await gameItems.methods.balanceOf(this.state.account, 0).call();
 			console.log(numberOfPiratesOwned);
@@ -71,7 +74,7 @@ export default class Profile extends Component {
 				<p>Owner: {this.state.owner}</p>
 				{ this.state.successMessage != null && <p className="success-message">Success: { this.state.successMessage }</p> }
 				{ this.state.errorMessage != null && <p className="error-message">Error: { this.state.errorMessage }</p> }
-				{ this.state.numberOfPiratesOwned != null && <p>Pirates owned: { this.state.numberOfPiratesOwned }</p> }
+				<NumberOfOwnedPirates numberOfPirates = { this.state.numberOfPiratesOwned } />
 			</div>
 		);
 	}

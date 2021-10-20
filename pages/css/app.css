@@ -2,6 +2,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&family=Cardo&display=swap');
 
 body {
+	background-image: url("../assets/pirate_cove.jpeg");
+	background-repeat: no-repeat;
+	background-size: cover;
 	background-color: #111;
 	text-align: center;
 	margin: 0 auto;
