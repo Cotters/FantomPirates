@@ -1,6 +1,6 @@
 import Navbar from './NavigationBar';
 
-export default function Layout({ children }) {
+const MainLayout = ({ children }) => {
   return (
     <>
       <Navbar />
@@ -8,3 +8,5 @@ export default function Layout({ children }) {
     </>
   )
 }
+
+export default MainLayout;

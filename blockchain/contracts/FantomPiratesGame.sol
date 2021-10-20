@@ -24,8 +24,4 @@ contract FantomPiratesGame is ERC1155Holder {
         ""
     );
   }
-
-  function mintShip() internal payable {
-    
-  }
 }
