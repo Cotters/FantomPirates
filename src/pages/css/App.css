@@ -1,16 +1,40 @@
 @import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&family=Cardo&display=swap');
 
-body {
-  background-image: url("../assets/pirate_cove.jpeg");
-  background-repeat: no-repeat;
+html { 
+  background: url("../assets/pirate_cove.jpeg") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
   background-size: cover;
+}
+
+/*.main-content {
+  background: url("../assets/pirate_cove.jpeg") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}*/
+
+html {
   background-color: #111;
+}
+
+body {
   text-align: center;
   margin: 0 auto;
   color: #eee;
+  background-color: #11111188;
+  height: 100vh
 }
 
+.page-content {
+  width: 50%;
+  margin: 20px auto;
+  background-color: #11111188;
+  padding: 25px;
+}
 
 h1,h2,h3,h4,h5,h6, button {
   font-family: 'Berkshire Swash';
@@ -18,13 +42,14 @@ h1,h2,h3,h4,h5,h6, button {
 
 p, tr, th, a, li, span, small {
   font-family: 'Cardo', serif;
+  color: #fff;
 }
 
 button {
   background-color: #111;
   text-decoration: none;
   border: 2px solid #eee;
-  padding: 5px 10px;
+  padding: 10px 15px;
   color: #eee;
 }
 

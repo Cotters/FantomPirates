@@ -63,8 +63,8 @@ export default class Profile extends Component {
 
 	render() {
 		return (
-			<div>
-				<h1>Profile</h1>
+			<div className="page-content">
+				<h1>Pirates ({this.state.numberOfPiratesOwned})</h1>
 				<MintPirateButton
 					 onButtonPress={this.handlePirateButtonPressed} />
 				<p>Contract: {this.state.gameContractAddress}</p>
@@ -72,7 +72,6 @@ export default class Profile extends Component {
 				<p>Owner: {this.state.owner}</p>
 				{ this.state.successMessage != null && <p className="success-message">Success: { this.state.successMessage }</p> }
 				{ this.state.errorMessage != null && <p className="error-message">Error: { this.state.errorMessage }</p> }
-				<NumberOfOwnedPirates numberOfPirates = { this.state.numberOfPiratesOwned } />
 			</div>
 		);
 	}

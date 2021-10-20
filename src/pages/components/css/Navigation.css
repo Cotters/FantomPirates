@@ -1,17 +1,21 @@
 .navigation-bar {
-	margin: 10px 0;
-	text-align: left;
+	background-color: #111;
 	padding: 10px;
+	margin: 0;
 }
 
 .navigation-bar ul {
 	list-style: none;
-	margin: 0;
 }
 
-.navigation-bar li {
+.navigation-bar #nav-float-left li {
 	display: inline;
 	margin: 0 10px;
+	float: left;
+}
+
+.navigation-bar #nav-float-right {
+	text-align: right;
 }
 
 .navigation-bar a {
