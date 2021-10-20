@@ -7,24 +7,12 @@ html {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-}
-
-/*.main-content {
-  background: url("../assets/pirate_cove.jpeg") no-repeat center center fixed; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-}*/
-
-html {
-  background-color: #111;
+  color: #eee;
 }
 
 body {
   text-align: center;
-  margin: 0 auto;
-  color: #eee;
+  margin: 0;
   background-color: #11111188;
   height: 100vh
 }
@@ -42,7 +30,11 @@ h1,h2,h3,h4,h5,h6, button {
 
 p, tr, th, a, li, span, small {
   font-family: 'Cardo', serif;
-  color: #fff;
+  color: #eee;
+}
+
+a, p {
+  margin: 2em 0;
 }
 
 button {
@@ -51,6 +43,7 @@ button {
   border: 2px solid #eee;
   padding: 10px 15px;
   color: #eee;
+  margin: 1em;
 }
 
 button:hover {

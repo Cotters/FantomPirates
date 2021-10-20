@@ -9,9 +9,7 @@ import gameItems from '../blockchain/game_items';
 export default class Profile extends Component {
 
 	state = {
-		gameContractAddress: game._address,
 		account: web3.currentProvider.selectedAddress,
-		owner: "",
 		numberOfPiratesOwned: 0,
 		successMessage: null,
 		errorMessage: null,
@@ -24,17 +22,7 @@ export default class Profile extends Component {
 	}
 
 	async componentDidMount() {
-		await this.loadContractOwner();
 		await this.loadNumberOfPirates()
-	}
-
-	async loadContractOwner() {
-		try {
-			const owner = await game.methods.owner().call();
-			this.setState({ owner });
-		} catch (error) {
-			console.error(error);
-		}
 	}
 
 	async loadNumberOfPirates() {
@@ -67,9 +55,6 @@ export default class Profile extends Component {
 				<h1>Pirates ({this.state.numberOfPiratesOwned})</h1>
 				<MintPirateButton
 					 onButtonPress={this.handlePirateButtonPressed} />
-				<p>Contract: {this.state.gameContractAddress}</p>
-				<p>Account: {this.state.account}</p>
-				<p>Owner: {this.state.owner}</p>
 				{ this.state.successMessage != null && <p className="success-message">Success: { this.state.successMessage }</p> }
 				{ this.state.errorMessage != null && <p className="error-message">Error: { this.state.errorMessage }</p> }
 			</div>
