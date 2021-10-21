@@ -3,7 +3,7 @@ import GameItems from './build/FantomPiratesGameItems.json';
 
 const gameItems = new web3.eth.Contract(
     GameItems.abi,
-    "0x0c81B1a6609F611D02882A4e162455b1C9F67A08"
+    "0x2B438c8cD3013B6eC1767C50Ed2cD3d5dFd250e0"
 );
 
 export default gameItems;

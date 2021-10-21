@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import MintPirateButton from './components/MintPirateButton';
-import NumberOfOwnedPirates from './components/NumberOfOwnedPirates';
 
 import web3 from '../blockchain/web3';
 import game from '../blockchain/game';
@@ -40,7 +39,8 @@ export default class Profile extends Component {
 		try {
     	await game.methods.mintPirate().send({from:this.state.account});
 		} catch(error) {
-			console.error(error);
+			console.error(error.message);
+			// TODO: Fix this...
 			const errorDataObject = JSON.parse(error.message.substring(24).trim()).data;
 			const key = Object.keys(errorDataObject)[0];
 			const errorMessage = errorDataObject[key].reason;

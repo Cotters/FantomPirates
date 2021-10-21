@@ -8,15 +8,28 @@
 	list-style: none;
 }
 
-.navigation-bar #nav-float-left li {
-	display: inline;
-	margin: 0 10px;
-	float: left;
+.navigation-bar li {
+	margin: 30px 0;
+	padding: 0;
 }
 
-.navigation-bar #nav-float-right {
-	text-align: right;
+@media(min-width:760px) {
+	.navigation-bar li {
+		margin: 0;
+	}
+
+	.navigation-bar #nav-float-left li {
+		display: inline;
+		margin: 0 10px;
+		float: left;
+	}
+  
+	.navigation-bar #nav-float-right {
+		text-align: right;
+		margin-right: 40px;
+	}
 }
+
 
 .navigation-bar a {
 	background-color: #000;

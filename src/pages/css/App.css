@@ -16,14 +16,19 @@ body {
   background-color: #11111188;
   height: 100vh
 }
-
 .page-content {
-  width: 50%;
-  margin: 20px auto;
+  width: 75%;
+  max-width: 760px;
+  margin: 1em auto;
   background-color: #11111188;
   padding: 25px;
 }
 
+@media(min-width:900px) {
+  .page-content {
+    width: 60%;
+  }
+}
 h1,h2,h3,h4,h5,h6, button {
   font-family: 'Berkshire Swash';
 }
