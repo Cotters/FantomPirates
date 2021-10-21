@@ -2,15 +2,15 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
-import "./FantomPiratesGameItems.sol";
+import "./FantomPiratesBaseGameItems.sol";
 
 contract FantomPiratesGame is ERC1155Holder {
 
   address public owner = msg.sender;
-  FantomPiratesGameItems public gameItems;
+  FantomPiratesBaseGameItems public gameItems;
 
   constructor(address _gameItemsAddress) {
-    gameItems = FantomPiratesGameItems(_gameItemsAddress);
+    gameItems = FantomPiratesBaseGameItems(_gameItemsAddress);
   }
 
   function mintPirate() public payable {

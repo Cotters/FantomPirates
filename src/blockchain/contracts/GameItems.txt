@@ -1,0 +1,5 @@
+GameItem[] public gameItems;// 0 => GameItem(0, "Pirate") -- Then we can add new GameItems!!
+mapping(address => GameItem[][]) balances;
+// balances[address][0]) => [GameItem(0, ...), GameItem(0, ...)]
+// balances[address][1]) => [GameItem(1, ...), GameItem(1, ...)] -- Index will match the uid of the GameItem as that's how they're stored.
+// 0x123 => [0][10] -> 0x123 has 10 Pirates
