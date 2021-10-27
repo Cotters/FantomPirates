@@ -12,18 +12,22 @@ contract FantomPiratesGame is ERC721Enumerable {
 
   uint public next_pirate_id = 1;
   uint public next_ship_id = 1;
+  uint public next_pet_id = 1;
+
   uint constant DAY = 1 days;
 
   uint constant xp_per_quest = 250;
   uint constant gold_per_quest = 100;
 
   uint constant gold_for_ship = 1500;
+  uint constant gold_for_pet = 3000;
   
   mapping(uint => uint) public level;
   mapping(uint => uint) public xp;
   mapping(uint => uint) public quests_log;
-  mapping(uint => uint) public ship; // pirate_id => ship_id;
+  mapping(uint => uint) public ship;  // pirate_id => ship_id;
   mapping(uint => uint) public gold;
+  mapping(uint => uint) public pet;   // pirate_id => pet_id;
 
   FantomPiratesShip public _ships_contract;
   ERC20 public _gold_contract;
@@ -59,6 +63,17 @@ contract FantomPiratesGame is ERC721Enumerable {
     emit ShipCreated(msg.sender, _next_ship_id);
   }
 
+  function mintPet(uint256 _pirate_id) public payable {
+    uint _next_pet_id = next_pet_id;
+    uint256 numberOfPiratesOwned = balanceOf(msg.sender);
+    require(_pirate_id != 0 && numberOfPiratesOwned > 0, "You must own a pirate before you can own a pet!");
+    require(pet[_pirate_id] == 0, "Your pirate can only own one pet!");
+    require(gold[_pirate_id] >= gold_for_pet, "Your pirate does not hold enough gold to be buy a ship!");
+    next_pet_id++;
+    gold[_pirate_id] -= gold_for_pet;
+    ship[_pirate_id] = _next_pet_id;
+  }
+
   function doQuest(uint _pirate_id) public payable {
     require(block.timestamp > quests_log[_pirate_id], "You must wait a day before your next quest!");
     quests_log[_pirate_id] = block.timestamp + DAY;
@@ -82,5 +97,5 @@ contract FantomPiratesGame is ERC721Enumerable {
       _required_xp += (i * xp_per_quest);
     }
     return _required_xp;
-  } 
+  }
 }

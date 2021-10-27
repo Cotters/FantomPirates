@@ -11,7 +11,7 @@ contract("Game - Pets", async accounts => {
 		gameInstance = await Game.new(shipsInstance.address);
 	});
 
-	it("should not allow pirate with less than 1500 gold to mint a ship", async () => {
+	it("should not allow pirate with less than 3000 gold to mint a ship", async () => {
 		await gameInstance.mintPirate();
 		truffleAssert.reverts(gameInstance.mintPet(1), "Your pirate does not hold enough gold to be buy a pet!");
 	});
