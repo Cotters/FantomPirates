@@ -1,7 +1,6 @@
 const Ships = artifacts.require("FantomPiratesShip");
 const Game = artifacts.require("FantomPiratesGame");
 const truffleAssert = require('truffle-assertions');
-const timeMachine = require('ganache-time-traveler');
 
 contract("Game - Quests", async accounts => {
 	let gameInstance;
@@ -24,15 +23,9 @@ contract("Game - Quests", async accounts => {
 		truffleAssert.reverts(gameInstance.doQuest(1), "You must wait a day before your next quest!")
 	});
 
-	it("should allow a pirate to level up when required XP is attained", async () => {
+	it("should reward gold to a pirate when questing", async () => {
 		await gameInstance.mintPirate();
-		const oneDay = 60*60*25;
-		// Lvl 2 requires 1500 XP
-		const questsRequired = 1500/250;
-		for (i = 0;i<questsRequired;i++) {
-			await gameInstance.doQuest(1);
-			await timeMachine.advanceTimeAndBlock(oneDay);
-		}
-		await gameInstance.levelUp(1);
+		await gameInstance.doQuest(1);
+		assert.equal(100, await gameInstance.gold.call(1), "Pirate was not rewarded 100 gold for doing a quest.");
 	});
 });

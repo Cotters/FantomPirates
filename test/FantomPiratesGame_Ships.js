@@ -11,28 +11,22 @@ contract("Game - Ships", async accounts => {
 		gameInstance = await Game.new(shipsInstance.address);
 	});
 
-	it("should not allow level 1 pirate to mint a ship", async () => {
+	it("should not allow pirate with less than 1500 gold to mint a ship", async () => {
 		await gameInstance.mintPirate();
-		truffleAssert.reverts(gameInstance.mintShip(1), "Your pirate must be at least level 2 in order to be a captain!");
+		truffleAssert.reverts(gameInstance.mintShip(1), "Your pirate does not hold enough gold to be buy a ship!");
 	});
 
-	it("should allow level 2 pirate to mint a ship", async () => {
-		const oneDay = 60*60*25
+	it("should allow pirate to mint a ship - and only one ship - when holding at least 1500 gold", async () => {
 		await gameInstance.mintPirate();
-		// Lvl 2 requires 1500 XP
-		const questsRequired = 1500/250
+		const oneDay = 60*60*25
+		// Lvl 3 requires a total of 1500 + 2250 XP
+		const questsRequired = (1500+2250)/250;
 		for (i = 0;i<questsRequired;i++) {
 			await gameInstance.doQuest(1);
 			await timeMachine.advanceTimeAndBlock(oneDay);
 		}
 		await gameInstance.mintShip(1);
-		assert.equal(1, await gameInstance.ship.call(1), "Account with level 2 pirate was not allowed to mint a ship.");
-	});
-
-	it("should only allow a pirate to captain one ship", async () => {
-		await gameInstance.mintPirate();
-		await gameInstance.doQuest(1);
-		await gameInstance.mintShip(1);
-		truffleAssert.reverts(gameInstance.mintShip(1), "Your pirate can only captain one ship!")
+		assert.equal(1, await gameInstance.ship.call(1), "Pirate with 1500 gold was not allowed to mint a ship.");
+		truffleAssert.reverts(gameInstance.mintShip(1), "Your pirate can only captain one ship!");
 	});
 });

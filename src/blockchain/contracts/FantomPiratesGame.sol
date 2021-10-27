@@ -14,12 +14,16 @@ contract FantomPiratesGame is ERC721Enumerable {
   uint public next_ship_id = 1;
   uint constant DAY = 1 days;
 
-  uint constant xp_per_day = 250;
+  uint constant xp_per_quest = 250;
+  uint constant gold_per_quest = 100;
+
+  uint constant gold_for_ship = 1500;
   
   mapping(uint => uint) public level;
   mapping(uint => uint) public xp;
   mapping(uint => uint) public quests_log;
   mapping(uint => uint) public ship; // pirate_id => ship_id;
+  mapping(uint => uint) public gold;
 
   FantomPiratesShip public _ships_contract;
   ERC20 public _gold_contract;
@@ -47,18 +51,19 @@ contract FantomPiratesGame is ERC721Enumerable {
     uint256 numberOfPiratesOwned = balanceOf(msg.sender);
     require(_pirate_id != 0 && numberOfPiratesOwned > 0, "You must own a pirate before you can own a ship!");
     require(ship[_pirate_id] == 0, "Your pirate can only captain one ship!");
-    require(level[_pirate_id] > 1, "Your pirate must be at least level 2 in order to be a captain!");
+    require(gold[_pirate_id] >= gold_for_ship, "Your pirate does not hold enough gold to be buy a ship!");
     _ships_contract.mintShip(msg.sender, _next_ship_id);
-    ship[_pirate_id] = _next_ship_id; // assign pirate a ship
-    emit ShipCreated(msg.sender, _next_ship_id);
     next_ship_id++;
+    gold[_pirate_id] -= gold_for_ship;
+    ship[_pirate_id] = _next_ship_id;
+    emit ShipCreated(msg.sender, _next_ship_id);
   }
 
   function doQuest(uint _pirate_id) public payable {
     require(block.timestamp > quests_log[_pirate_id], "You must wait a day before your next quest!");
-    quests_log[_pirate_id] = block.timestamp + DAY; // next available quest;
-    xp[_pirate_id] += xp_per_day;
-    level[_pirate_id] = 2;
+    quests_log[_pirate_id] = block.timestamp + DAY;
+    xp[_pirate_id] += xp_per_quest;
+    gold[_pirate_id] += gold_per_quest;
   }
 
   function levelUp(uint _pirate_id) public payable {
@@ -74,7 +79,7 @@ contract FantomPiratesGame is ERC721Enumerable {
   function requiredXpForLevel(uint _pirate_level) public pure returns (uint required_xp) {
     uint _required_xp = 1000;
     for (uint i = 2; i<=_pirate_level;i++) {
-      _required_xp += (i * xp_per_day);
+      _required_xp += (i * xp_per_quest);
     }
     return _required_xp;
   } 

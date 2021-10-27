@@ -2,6 +2,7 @@ const Ships = artifacts.require("FantomPiratesShip");
 const Game = artifacts.require("FantomPiratesGame");
 const truffleAssert = require('truffle-assertions');
 const truffleEvent = require('truffle-events');
+const timeMachine = require('ganache-time-traveler');
 
 contract("Game - Pirates", async accounts => {
 	const myAccount = accounts[0];
@@ -38,5 +39,18 @@ contract("Game - Pirates", async accounts => {
     const pirateBalance = await gameInstance.balanceOf(myAccount);
 		assert.equal(10, pirateBalance.toNumber(), "Arbitrary account was not allowed to mint 10 pirates.");
 		truffleAssert.reverts(gameInstance.mintPirate(), "You can only own up to 10 pirates!");
+	});
+
+	it("should allow pirate to level up when XP attained", async () => {
+		await gameInstance.mintPirate();
+		const oneDay = 60*60*25;
+		// Lvl 2 requires 1500 XP
+		const questsRequired = 1500/250;
+		for (i = 0;i<questsRequired;i++) {
+			await gameInstance.doQuest(1);
+			await timeMachine.advanceTimeAndBlock(oneDay);
+		}
+		await gameInstance.levelUp(1);
+		assert.equal(2, await gameInstance.level.call(1), "Pirate was not allowed to level up to level 2 despite XP attained.");
 	});
 });
