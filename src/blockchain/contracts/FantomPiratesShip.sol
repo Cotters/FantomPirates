@@ -7,8 +7,6 @@ contract FantomPiratesShip is ERC721Enumerable {
 
   uint public next_ship_id;
 
-  mapping(uint => uint) public quests_log;
-
   constructor() ERC721("Fantom Pirates Ship", "ship") { }
   
   function mintShip(address to, uint tokenId) external {

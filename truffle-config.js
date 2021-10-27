@@ -80,7 +80,8 @@ module.exports = {
   // Set default mocha options here, use special reporters etc.
   mocha: {
     // timeout: 100000
-    useColors: true
+    useColors: true,
+    slow: 3000, // Means a 3s test is considered slow
   },
 
   // Configure your compilers

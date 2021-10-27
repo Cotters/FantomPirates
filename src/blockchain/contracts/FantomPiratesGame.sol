@@ -6,10 +6,6 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "./FantomPiratesShip.sol";
 import "./FantomPiratesGold.sol";
 
-// interface PiratesShip is IERC721Enumerable {
-//   function _safeMint(address to, uint256 tokenId) external;  
-// }
-
 contract FantomPiratesGame is ERC721Enumerable {
 
   address public owner = msg.sender;
@@ -17,10 +13,12 @@ contract FantomPiratesGame is ERC721Enumerable {
   uint public next_pirate_id = 1;
   uint public next_ship_id = 1;
   uint constant DAY = 1 days;
+
+  uint constant xp_per_day = 250;
   
   mapping(uint => uint) public level;
   mapping(uint => uint) public xp;
-  mapping(uint => uint) public quests_log; // To ensure questing once per day: quests_log[pirate_id] = block.timestamp + DAY
+  mapping(uint => uint) public quests_log;
   mapping(uint => uint) public ship; // pirate_id => ship_id;
 
   FantomPiratesShip public _ships_contract;
@@ -50,16 +48,34 @@ contract FantomPiratesGame is ERC721Enumerable {
     require(_pirate_id != 0 && numberOfPiratesOwned > 0, "You must own a pirate before you can own a ship!");
     require(ship[_pirate_id] == 0, "Your pirate can only captain one ship!");
     require(level[_pirate_id] > 1, "Your pirate must be at least level 2 in order to be a captain!");
-    ship[_pirate_id] = _next_ship_id; // assign pirate a ship
     _ships_contract.mintShip(msg.sender, _next_ship_id);
+    ship[_pirate_id] = _next_ship_id; // assign pirate a ship
     emit ShipCreated(msg.sender, _next_ship_id);
     next_ship_id++;
   }
 
   function doQuest(uint _pirate_id) public payable {
+    require(block.timestamp > quests_log[_pirate_id], "You must wait a day before your next quest!");
+    quests_log[_pirate_id] = block.timestamp + DAY; // next available quest;
+    xp[_pirate_id] += xp_per_day;
     level[_pirate_id] = 2;
-    // quests_log[_pirate_id] = block.timestamp + DAY; // next available quest;
   }
 
-  // function calculateQuestsCooldown(uint _pirate_id) public 
+  function levelUp(uint _pirate_id) public payable {
+    require(_isApprovedOrOwner(msg.sender, _pirate_id), "You must own this pirate in order to level it up!");
+    uint _pirate_level = level[_pirate_id];
+    uint required_xp = requiredXpForLevel(_pirate_level++);
+    require(xp[_pirate_id] >= required_xp, "You do not have the required XP to level up this pirate.");
+    xp[_pirate_id] -= required_xp;
+    level[_pirate_id] = _pirate_level + 1;
+    // emit Leveled(msg.sender, _pirate_level, _pirate_id);
+  }
+
+  function requiredXpForLevel(uint _pirate_level) public pure returns (uint required_xp) {
+    uint _required_xp = 1000;
+    for (uint i = 2; i<=_pirate_level;i++) {
+      _required_xp += (i * xp_per_day);
+    }
+    return _required_xp;
+  } 
 }

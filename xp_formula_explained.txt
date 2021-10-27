@@ -1,0 +1,5 @@
+Formula: Given XPn = 1000 for n=1, { XPn+1 = XPn + (250 * n) }
+Lvl 1 => 1000xp (4 days), 2 => 1500xp (6 days), 3 => 2250xp (9 days), 4 => 3250xp (13 days), 5 => 4500xp (18 days), 6 => 6000xp (24 days), 7 => 7750xp (31 days)
+
+Means days_required(XPn+1) = days_required(XPn) + n (where n is the level)
+Or, more simply, days required for the next level (n) goes up by n.
