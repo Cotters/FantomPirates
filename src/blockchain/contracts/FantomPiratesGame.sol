@@ -34,7 +34,7 @@ contract FantomPiratesGame is ERC721Enumerable {
 
   event PirateCreated(address indexed owner, uint pirate_id);
   event ShipCreated(address indexed owner, uint ship_id);
-  event Leveled(address indexed owner, uint level, uint id);
+  event Leveled(address indexed owner, uint id, uint level);
   
   constructor(address _ship_contract_address) ERC721("Fantom Pirates", "FP") {
     _ships_contract = FantomPiratesShip(_ship_contract_address);
@@ -84,11 +84,11 @@ contract FantomPiratesGame is ERC721Enumerable {
   function levelUp(uint _pirate_id) public payable {
     require(_isApprovedOrOwner(msg.sender, _pirate_id), "You must own this pirate in order to level it up!");
     uint _pirate_level = level[_pirate_id];
-    uint required_xp = requiredXpForLevel(_pirate_level++);
+    uint required_xp = requiredXpForLevel(_pirate_level + 1);
     require(xp[_pirate_id] >= required_xp, "You do not have the required XP to level up this pirate.");
     xp[_pirate_id] -= required_xp;
     level[_pirate_id] = _pirate_level + 1;
-    // emit Leveled(msg.sender, _pirate_level, _pirate_id);
+    emit Leveled(msg.sender, _pirate_id, _pirate_level);
   }
 
   function requiredXpForLevel(uint _pirate_level) public pure returns (uint required_xp) {
