@@ -1,0 +1,33 @@
+#pirates-list ul {
+	width: 100%;
+	margin: 0 auto;
+	margin: 2em 0;
+	list-style: none;
+}
+
+#pirates-list li {
+	margin: 0 10px;
+	padding: 2em;
+
+	float: left;
+}
+
+#pirates-list a {
+	text-decoration: none;
+	font-weight: 800;
+	font-size: 18px;
+	padding: 1em;
+}
+
+#pirate-card {
+	text-align: center;
+	background-color: #0006;
+	color: #fff;
+}
+
+#pirate-card img {
+	display: inherit;
+	margin: 0 auto;
+	width: 50px;
+	height: 25px;
+}

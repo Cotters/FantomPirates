@@ -9,7 +9,7 @@ if (typeof window !== 'undefined' && window.ethereum) {
     web3Provider = window.ethereum;
   } catch (error) {
     console.error("User denied account access.");
-    exit();
+    // exit();
   }
 } else {
   web3Provider = new Web3.providers.HttpProvider("https://localhost:7545");

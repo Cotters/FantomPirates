@@ -57,10 +57,10 @@ contract FantomPiratesGame is ERC721Enumerable {
     require(ship[_pirate_id] == 0, "Your pirate can only captain one ship!");
     require(gold[_pirate_id] >= gold_for_ship, "Your pirate does not hold enough gold to be buy a ship!");
     _ships_contract.mintShip(msg.sender, _next_ship_id);
-    next_ship_id++;
     gold[_pirate_id] -= gold_for_ship;
     ship[_pirate_id] = _next_ship_id;
     emit ShipCreated(msg.sender, _next_ship_id);
+    next_ship_id++;
   }
 
   function mintPet(uint256 _pirate_id) public payable {
