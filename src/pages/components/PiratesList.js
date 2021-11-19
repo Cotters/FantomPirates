@@ -1,8 +1,7 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 import './css/PiratesList.css';
-import flag from '../assets/pirate_flag.jpeg'
 
 import PirateCard from './PirateCard';
 
@@ -12,7 +11,7 @@ const PiratesList = (props) => {
 			<ul>
 				{
 					props.pirates.map(pirate => {
-						return <li key={pirate}><PirateCard pirate={pirate} onQuestPressed={props.onQuestPressed} /></li>
+						return <li key={pirate.id}><PirateCard pirate={pirate} onQuestPressed={props.onQuestPressed} /></li>
 					})
 				}
 			</ul>

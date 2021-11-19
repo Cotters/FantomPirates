@@ -4,14 +4,17 @@ import MintPirateButton from './components/MintPirateButton';
 
 import web3 from '../blockchain/web3';
 import game from '../blockchain/game';
-// import gameItems from '../blockchain/game_items';
+
+const Pirate = (id, level, xp, questTimeout) => {
+	return { id, level, xp, questTimeout };
+};
 
 export default class Profile extends Component {
 
 	state = {
 		account: web3.currentProvider.selectedAddress,
 		numberOfPiratesOwned: 0,
-		userTokenIds: [],
+		pirates: [Pirate],
 		successMessage: null,
 		errorMessage: null,
 	}
@@ -52,13 +55,16 @@ export default class Profile extends Component {
 	}
 	
 	async getTokenIds(numberOfPirates) {
-		let userTokenIds = [];
+		let pirates = [];
 		const account = web3.currentProvider.selectedAddress;
 		for (let i = 0; i<numberOfPirates; i++) {
-			let tokenId = await game.methods.tokenOfOwnerByIndex(account, i).call();
-			userTokenIds.push(tokenId);
+			let pirateId = await game.methods.tokenOfOwnerByIndex(account, i).call();
+			let level = await game.methods.level(pirateId).call();
+			let xp = await game.methods.xp(pirateId).call();
+			let questTimeout = await game.methods.quests_log(pirateId).call();
+			pirates.push(Pirate(pirateId, level, xp, questTimeout));
 		}
-		this.setState({ userTokenIds })
+		this.setState({ pirates });
 	}
 
 	async handleMintPiratePressed() {
@@ -97,9 +103,9 @@ export default class Profile extends Component {
 						 onButtonPress={this.handleMintPiratePressed} />
 				</h1>
 
-				<PiratesList
-					pirates={this.state.userTokenIds} 
-					onQuestPressed={this.handlePirateQuestPressed} />
+				{this.state.pirates.count !== 0 && <PiratesList
+					pirates={this.state.pirates} 
+					onQuestPressed={this.handlePirateQuestPressed} /> }
 				
 				{ this.state.successMessage != null && <p className="success-message">Success: { this.state.successMessage }</p> }
 				{ this.state.errorMessage != null && <p className="error-message">Error: { this.state.errorMessage }</p> }

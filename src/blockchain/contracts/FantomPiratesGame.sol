@@ -43,6 +43,7 @@ contract FantomPiratesGame is ERC721Enumerable {
   function mintPirate() public payable {
     uint _pirate_id = next_pirate_id;
     require(balanceOf(msg.sender) < 10, "You can only own up to 10 pirates!");
+    xp[_pirate_id] = 0;
     level[_pirate_id] = 1;
     ship[_pirate_id] = 0;
     _safeMint(msg.sender, _pirate_id);

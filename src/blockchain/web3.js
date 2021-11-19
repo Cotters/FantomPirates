@@ -1,7 +1,6 @@
 import Web3 from 'web3';
 
 let web3Provider
-let web3
 
 if (typeof window !== 'undefined' && window.ethereum) {
   try {
