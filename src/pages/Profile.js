@@ -18,7 +18,8 @@ export default class Profile extends Component {
 
 	constructor(props) {
 		super(props);
-		this.handlePirateButtonPressed = this.handlePirateButtonPressed.bind(this);
+		this.handleMintPiratePressed = this.handleMintPiratePressed.bind(this);
+		this.handlePirateQuestPressed = this.handlePirateQuestPressed.bind(this);
 		this.subscribeToEvents = this.subscribeToEvents.bind(this);
 		this.loadNumberOfPirates = this.loadNumberOfPirates.bind(this);
 	}
@@ -60,9 +61,9 @@ export default class Profile extends Component {
 		this.setState({ userTokenIds })
 	}
 
-	async handlePirateButtonPressed() {
+	async handleMintPiratePressed() {
 		try {
-    	await game.methods.mintPirate().send({from:this.state.account});
+    	await game.methods.mintPirate().send({from: this.state.account});
 		} catch(error) {
 			console.error(error.message);
 			// TODO: Fix this...
@@ -74,16 +75,31 @@ export default class Profile extends Component {
 		}
   }
 
+  async handlePirateQuestPressed(pirateId) {
+  	try {
+  		await game.methods.doQuest(pirateId).send({from: this.state.account});
+  	} catch(error) {
+  		// TODO: Fix this... :S
+  		const errorObject = JSON.parse(error.message.substring(49, error.message.length-1).trim());
+  		const errorDataObject = errorObject.value.data.data;
+  		const key = Object.keys(errorDataObject)[0];
+			const errorMessage = errorDataObject[key].reason;
+			this.setState({ errorMessage });
+  	}
+  }
+
 	render() {
 		return (
 			<div className="page-content">
 				<h1>
-					Pirates ({this.state.numberOfPiratesOwned}) 
+					Pirates ({this.state.numberOfPiratesOwned || 0}) 
 					<MintPirateButton
-						 onButtonPress={this.handlePirateButtonPressed} />
+						 onButtonPress={this.handleMintPiratePressed} />
 				</h1>
 
-				<PiratesList pirates={this.state.userTokenIds} />
+				<PiratesList
+					pirates={this.state.userTokenIds} 
+					onQuestPressed={this.handlePirateQuestPressed} />
 				
 				{ this.state.successMessage != null && <p className="success-message">Success: { this.state.successMessage }</p> }
 				{ this.state.errorMessage != null && <p className="error-message">Error: { this.state.errorMessage }</p> }

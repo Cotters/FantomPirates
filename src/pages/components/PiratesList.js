@@ -12,7 +12,7 @@ const PiratesList = (props) => {
 			<ul>
 				{
 					props.pirates.map(pirate => {
-						return <li key={pirate}><PirateCard pirate={pirate} /></li>
+						return <li key={pirate}><PirateCard pirate={pirate} onQuestPressed={props.onQuestPressed} /></li>
 					})
 				}
 			</ul>

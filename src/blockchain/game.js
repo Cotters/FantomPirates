@@ -1,5 +1,5 @@
 import web3 from './web3';
 import Game from './build/FantomPiratesGame.json';
 
-export default new web3.eth.Contract(Game.abi,"0xFAe3350a4b44a123f4834B1ffB19f9D3c45655D4");
+export default new web3.eth.Contract(Game.abi,"0x7650E51DA4ebFFA7B85333C61E6e784Fa89eC366");
 
