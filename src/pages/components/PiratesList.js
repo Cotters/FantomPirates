@@ -1,5 +1,4 @@
 import React from 'react';
-// import { Link } from "react-router-dom";
 
 import './css/PiratesList.css';
 
@@ -11,7 +10,12 @@ const PiratesList = (props) => {
 			<ul>
 				{
 					props.pirates.map(pirate => {
-						return <li key={pirate.id}><PirateCard pirate={pirate} onQuestPressed={props.onQuestPressed} /></li>
+						return <li key={pirate.id}>
+							<PirateCard 
+								pirate={pirate} 
+								onQuestPressed={props.onQuestPressed} 
+								onLevelUpPressed={props.onLevelUpPressed} />
+						</li>
 					})
 				}
 			</ul>

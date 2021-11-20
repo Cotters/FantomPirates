@@ -5,8 +5,8 @@ import MintPirateButton from './components/MintPirateButton';
 import web3 from '../blockchain/web3';
 import game from '../blockchain/game';
 
-const Pirate = (id, level, xp, questTimeout) => {
-	return { id, level, xp, questTimeout };
+const Pirate = (id, level, xp, nextLevelXp, gold, questTimeout) => {
+	return { id, level, xp, nextLevelXp, gold, questTimeout };
 };
 
 export default class Profile extends Component {
@@ -22,7 +22,8 @@ export default class Profile extends Component {
 	constructor(props) {
 		super(props);
 		this.handleMintPiratePressed = this.handleMintPiratePressed.bind(this);
-		this.handlePirateQuestPressed = this.handlePirateQuestPressed.bind(this);
+		this.handleDoQuestPressed = this.handleDoQuestPressed.bind(this);
+		this.handleLevelUpPressed = this.handleLevelUpPressed.bind(this);
 		this.subscribeToEvents = this.subscribeToEvents.bind(this);
 		this.loadNumberOfPirates = this.loadNumberOfPirates.bind(this);
 	}
@@ -48,21 +49,23 @@ export default class Profile extends Component {
 		try {
 			const numberOfPiratesOwned = await game.methods.balanceOf(account).call();
 			this.setState({ numberOfPiratesOwned })
-			this.getTokenIds(numberOfPiratesOwned)
+			this.getPirateInformation(numberOfPiratesOwned)
 		} catch (error) {
 			console.error(error);
 		}
 	}
 	
-	async getTokenIds(numberOfPirates) {
+	async getPirateInformation(numberOfPirates) {
 		let pirates = [];
 		const account = web3.currentProvider.selectedAddress;
 		for (let i = 0; i<numberOfPirates; i++) {
 			let pirateId = await game.methods.tokenOfOwnerByIndex(account, i).call();
 			let level = await game.methods.level(pirateId).call();
 			let xp = await game.methods.xp(pirateId).call();
+			let nextLevelXp = await game.methods.requiredXpForLevel(level).call();
+			let gold = await game.methods.gold(pirateId).call();
 			let questTimeout = await game.methods.quests_log(pirateId).call();
-			pirates.push(Pirate(pirateId, level, xp, questTimeout));
+			pirates.push(Pirate(pirateId, level, xp, nextLevelXp, gold, questTimeout*1000));
 		}
 		this.setState({ pirates });
 	}
@@ -81,13 +84,29 @@ export default class Profile extends Component {
 		}
   }
 
-  async handlePirateQuestPressed(pirateId) {
+  async handleDoQuestPressed(pirateId) {
   	try {
   		await game.methods.doQuest(pirateId).send({from: this.state.account});
   	} catch(error) {
   		// TODO: Fix this... :S
   		const errorObject = JSON.parse(error.message.substring(49, error.message.length-1).trim());
   		const errorDataObject = errorObject.value.data.data;
+  		const key = Object.keys(errorDataObject)[0];
+			const errorMessage = errorDataObject[key].reason;
+			this.setState({ errorMessage });
+  	}
+  }
+
+  async handleLevelUpPressed(pirateId) {
+  	try {
+  		await game.methods.levelUp(pirateId).send({from: this.state.account});
+  	} catch(error) {
+  		// TODO: And fix this...
+  		// console.log(error.message.substring(49, error.message.length-1).trim());
+  		const errorObject = JSON.parse(error.message.substring(49, error.message.length-1).trim());
+  		console.log(errorObject);
+  		const errorDataObject = errorObject.value.data.data;
+  		console.log(errorDataObject);
   		const key = Object.keys(errorDataObject)[0];
 			const errorMessage = errorDataObject[key].reason;
 			this.setState({ errorMessage });
@@ -103,12 +122,14 @@ export default class Profile extends Component {
 						 onButtonPress={this.handleMintPiratePressed} />
 				</h1>
 
-				{this.state.pirates.count !== 0 && <PiratesList
-					pirates={this.state.pirates} 
-					onQuestPressed={this.handlePirateQuestPressed} /> }
-				
 				{ this.state.successMessage != null && <p className="success-message">Success: { this.state.successMessage }</p> }
 				{ this.state.errorMessage != null && <p className="error-message">Error: { this.state.errorMessage }</p> }
+
+				{this.state.pirates.count !== 0 && <PiratesList
+					pirates={this.state.pirates} 
+					onQuestPressed={this.handleDoQuestPressed}
+					onLevelUpPressed={this.handleLevelUpPressed} /> }
+				
 			</div>
 		);
 	}

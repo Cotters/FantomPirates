@@ -7,7 +7,7 @@ const MintPirateButton = (props) => {
 		props.onButtonPress();
 	}
 
-  return <button type="submit" onClick={handleMintPirate}>Mint a pirate</button>
+  return <button className="btn" type="submit" onClick={handleMintPirate}>Mint a pirate</button>
 }
 
 export default MintPirateButton;

@@ -32,15 +32,31 @@
 	text-align: center;
 }
 
-#pirate-card button {
-	margin: 0.5em 0;
+#pirate-card .btn {
+	margin: 0.5em auto 0 auto;
 	padding: 0.6em;
+	display: block;
+}
 
+#pirate-card .btn:disabled {
+	border: none;
+	text-decoration-line: line-through;
+	cursor: inherit;
 }
 
 #pirate-card img {
 	display: inherit;
-	margin: 0 auto;
-	width: 50px;
-	height: 25px;
+	margin: 0.5em auto;
+	width: 85px;
+	height: 50px;
+}
+
+#btn-level-up {
+	background: none;
+	border: none;
+	display: inline-block;
+}
+
+#btn-level-up:hover {
+	cursor: pointer;
 }

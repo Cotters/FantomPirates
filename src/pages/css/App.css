@@ -41,7 +41,7 @@ a, p {
   margin: 2em 0;
 }
 
-button {
+.btn {
   background-color: #111;
   text-decoration: none;
   border: 2px solid #eee;
@@ -50,20 +50,9 @@ button {
   margin: 1em;
 }
 
-button:hover {
+.btn:hover {
   text-decoration: underline;
   cursor: pointer;
-}
-
-.button {
-  text-decoration: none;
-  border: 2px solid #eee;
-  padding: 5px 10px;
-  color: #eee;
-}
-
-.button:hover {
-  text-decoration: underline;
 }
 
 .error-message {
