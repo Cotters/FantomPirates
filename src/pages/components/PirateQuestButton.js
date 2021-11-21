@@ -13,10 +13,10 @@ const PirateQuestButton = ({pirateId, questTimeout, onQuestPressed}) => {
 	function formattedQuestTimeout() {
 		if (canQuest())
 			return "Now!";
-		let date = new Date(questTimeout)
-		let dayMonth = months[date.getMonth()] + " " + date.getDate();
-		let hourMinutes = date.getHours() + ":" + date.getMinutes();
-		return dayMonth + ", " + hourMinutes;
+		return new Date(questTimeout).toLocaleString();;
+		// let dayMonth = months[date.getMonth()] + " " + date.getDate();
+		// let hourMinutes = date.getHours() + ":" + date.getMinutes();
+		// return dayMonth + ", " + hourMinutes;
 	}
 
 	function handleQuestPressed(e, pirateId) {

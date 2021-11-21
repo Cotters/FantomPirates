@@ -1,7 +1,7 @@
-#hall-of-pirates {
+/*#hall-of-pirates {
   cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🗡</text></svg>")
       16 0, auto;
-}
+}*/
 
 #hall-of-pirates {
   background-color: #111111aa;
@@ -16,12 +16,12 @@
 }
 
 
-#hall-of-pirates p, tr, th, a, span, small {
+#hall-of-pirates p, tr, th, a, span {
   font-family: 'Cardo', serif;
   font-size: 18px;
 }
 
-#hall-of-pirates p, span, small {
+#hall-of-pirates p, span {
   margin: 1.5em auto;
 }
 
@@ -45,7 +45,7 @@
   margin: auto;
 }
 
-#hall-of-pirates tr, #hall-of-pirates th {
+#hall-of-pirates table * {
   color: #000;
 }
 
@@ -57,13 +57,17 @@
   font-weight: 800;
   cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>⚔️</text></svg>")
       16 0, auto;
-  background: #7D5A50;
+  background: #704040;
   border: 1px solid #FCDEC0;
   border-radius: 2px;
   font-family: 'Berkshire Swash';
+  display: block;
+  margin: 1em auto;
 }
 
 .btn-buy-throne:hover {
+  background: #603020;
+  text-decoration: underline;
   border: 2px solid #FCDEC0;
   border-radius: 1px;
 }
@@ -80,6 +84,16 @@
 
 #hall-of-pirates tr:nth-child(even) {
   background-color: #ffdd8a;
+}
+
+#hall-of-pirates input {
+  color: white;
+  height: 30px;
+  background-color: #333a;
+  border: 1px solid #fff;
+  font-size: 18px;
+  margin: 0.25em;
+  padding: 0.3em;
 }
 
 #hall-of-pirates .transaction-pending-banner {
