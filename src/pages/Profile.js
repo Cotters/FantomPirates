@@ -65,7 +65,7 @@ export default class Profile extends Component {
 			let nextLevelXp = await game.methods.requiredXpForLevel(level).call();
 			let gold = await game.methods.gold(pirateId).call();
 			let questTimeout = await game.methods.quests_log(pirateId).call();
-			pirates.push(Pirate(pirateId, level, xp, nextLevelXp, gold, questTimeout*1000));
+			pirates.push(Pirate(pirateId, level, parseFloat(xp), parseFloat(nextLevelXp), parseFloat(gold), questTimeout*1000));
 		}
 		this.setState({ pirates });
 	}

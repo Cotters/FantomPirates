@@ -7,12 +7,9 @@ const PirateLevelUpButton = ({pirate, onLevelUpPressed}) => {
 		onLevelUpPressed(pirateId);
 	}
 
-	let canLevelUp = (pirate.xp >= pirate.nextLevelXp)
+	let canLevelUp = (pirate.xp >= pirate.nextLevelXp);
 
-	return (
-		<span>
-		{canLevelUp && <button id="btn-level-up" type="submit" onClick={e => handleLevelUpPressed(e, pirate.id)}>🔺</button>}
-		</span>)
+	return <span>{canLevelUp && <button id="btn-level-up" type="submit" onClick={e => handleLevelUpPressed(e, pirate.id)}>🔺</button>}</span>;
 }
 
 export default PirateLevelUpButton;
