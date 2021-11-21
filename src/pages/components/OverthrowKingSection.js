@@ -2,8 +2,12 @@ import React from 'react';
 
 const OverthrowKingSection = ({thronePrice, currentKingName, walletName, handleNameInput, handlePriceInput, handleOverthrow}) => {
 
+	let isKing = (currentKingName === walletName);
+
 	return (
-    <div>
+		<div>
+    {isKing === false && <div>
+    	<h1>⚔️ Overthrow t'e King! ⚔️</h1>
     	<p>Current price to become a Pirate King: <span className="king-price">{parseFloat(thronePrice).toPrecision(3)}</span> FTM.</p>
 			{currentKingName !== '' && <p>Current Pirate King: {currentKingName}</p>}
 			<input disabled={walletName !== ''} type="text" onChange={handleNameInput} placeholder="Name..." value={walletName} />
@@ -12,6 +16,8 @@ const OverthrowKingSection = ({thronePrice, currentKingName, walletName, handleN
 
 			<p hidden="false" className="transaction-pending-banner">You're request for the throne has been received!</p>
 			<p hidden="true" className="success-banner">You are now the new Pirate King!</p>
+    </div>}
+    {isKing && <p>{walletName}, <i>you are the current Fantom King!</i></p>}
     </div>
   )
 }

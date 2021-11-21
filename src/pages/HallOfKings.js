@@ -157,8 +157,6 @@ export default class HallOfKings extends Component {
 
 				<HallOfKingsTable kings={this.state.kings} />
 
-				<h1>⚔️ Overthrow t'e King! ⚔️</h1>
-
 				<OverthrowKingSection
 					thronePrice={this.state.thronePrice}
 					currentKingName={this.state.currentKingName}
