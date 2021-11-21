@@ -1,0 +1,105 @@
+#hall-of-pirates {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🗡</text></svg>")
+      16 0, auto;
+}
+
+@media(min-width:760px) {
+  #hall-of-pirates body {
+    max-width: 80%;
+    margin: auto;
+  }
+}
+
+
+#hall-of-pirates p, tr, th, a, span, small {
+  font-family: 'Cardo', serif;
+  font-size: 18px;
+}
+
+#hall-of-pirates .warning-label {
+  background-color: #dd6a70;
+  padding: 10px 5px;
+  font-style: italic;
+}
+
+#hall-of-pirates .king-name {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+#hall-of-pirates table {
+  text-align: center;
+  background-color: #ffec9e;
+  font-size: 21px;
+  border-spacing: 0;
+  border: 3px solid black;
+  margin: auto;
+}
+
+#hall-of-pirates tr, #hall-of-pirates th {
+  color: #000;
+}
+
+.btn-buy-throne {
+  width: 150px;
+  height: 50px;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 800;
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>⚔️</text></svg>")
+      16 0, auto;
+  background: #7D5A50;
+  border: 1px solid #FCDEC0;
+  border-radius: 2px;
+  font-family: 'Berkshire Swash';
+}
+
+.btn-buy-throne:hover {
+  border: 2px solid #FCDEC0;
+  border-radius: 1px;
+}
+
+.btn-buy-throne:active {
+  background: #B4846C;
+  border-radius: 0px;
+}
+
+#hall-of-pirates th, td {
+  padding: 10px;
+  border: 1px solid #333;
+}
+
+#hall-of-pirates tr:nth-child(even) {
+  background-color: #ffdd8a;
+}
+
+#hall-of-pirates .transaction-pending-banner {
+  background:#ffdd8a;
+  width: 50%;
+  margin: auto;
+  padding: 10px;
+  text-align: center;
+}
+
+#hall-of-pirates .success-banner {
+  background:#dd6a70; 
+  width: 50%;
+  margin: auto;
+  padding: 10px;
+  text-align: center;
+  font-size: 22px;
+}
+
+#hall-of-pirates .disclaimer-section {
+  background-color: #000a;
+}
+
+#hall-of-pirates .disclaimer-section>p {
+  font-size: 15px;
+  margin: 5px 0px;
+  line-height: 1.6em;
+}
+
+#hall-of-pirates .only-owner {
+  margin-top: 20px;
+}

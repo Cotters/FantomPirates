@@ -7,6 +7,7 @@ import game from '../blockchain/game';
 import About from './About';
 import PirateBay from './PirateBay';
 import Profile from './Profile';
+import HallOfPirates from './HallOfPirates';
 
 import './css/App.css';
 
@@ -18,6 +19,7 @@ function App() {
         <Route exact path="/" component={About} />
         <Route exact path="/bay" component={PirateBay} />
         <Route exact path="/profile" component={Profile} />
+        <Route exact path="/hall-of-pirates" component={HallOfPirates} />
       </Switch> 
     </div>
   );
