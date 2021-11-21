@@ -105,5 +105,12 @@ contract("Hall of Pirate Kings", async accounts => {
 		const owner = await kingsInstance.owner.call();
 		assert.equal(owner, otherAccount);
 	});
+
+	it("should know when the sender is the owner of the contract", async () => {
+		var isOwner = await kingsInstance.isSenderOwner.call({from: otherAccount});
+		assert.equal(false, isOwner);
+		isOwner = await kingsInstance.isSenderOwner.call({from: myAccount});
+		assert.equal(true, isOwner);
+	});
 });
 

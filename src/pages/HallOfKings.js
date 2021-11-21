@@ -3,6 +3,9 @@ import React, { Component } from 'react';
 import web3 from '../blockchain/web3';
 import kingsContract from '../blockchain/kings';
 
+import HallOfKingsTable from './components/HallOfKingsTable';
+import OverthrowKingSection from './components/OverthrowKingSection';
+
 import './css/HallOfKings.css';
 
 const King = (name, walletAddress, pricePaid, coronationDate) => {
@@ -20,6 +23,7 @@ export default class HallOfKings extends Component {
 		walletName: '',
 		inputtedName: '',
 		inputtedPrice: 0,
+		inputtedStartPrice: 0,
 		successMessage: null,
 		errorMessage: null,
 	}
@@ -33,6 +37,7 @@ export default class HallOfKings extends Component {
 		this.getWalletName = this.getWalletName.bind(this);
 		this.convertFromWei = this.convertFromWei.bind(this);
 		this.convertToWei = this.convertToWei.bind(this);
+		this.isOwner = this.isOwner.bind(this);
 	}
 
 	async componentDidMount() {
@@ -121,6 +126,23 @@ export default class HallOfKings extends Component {
 		}
 	}
 
+	handleChangeStartPriceInput = async (event) => {
+  	let inputtedStartPrice = await this.convertToWei(event.target.value);
+    this.setState({ inputtedStartPrice });
+  };
+
+	async changeInitialPrice(e) {
+		e.preventDefault();
+		try {
+			let newStartPrice = await this.convertToWei(this.state.inputtedStartPrice);
+			await kingsContract.methods.changeStartPrice(newStartPrice).send({ from: this.state.account });
+		} catch(error) {
+			console.error(error);
+		}
+	}
+
+	isOwner = async () => await kingsContract.methods.isSenderOwner().call();
+
 	render() {
 		return (
 			<div className="page-content" id="hall-of-pirates">
@@ -133,36 +155,21 @@ export default class HallOfKings extends Component {
 				<p>Beware of the curse: After 14 days of being King, you will be struck down and the throne will be empty - ready to be claimed at the inital price of {this.state.initialThronePrice} FTM.</p>
 				<p>Any King will be added to the...</p>
 
-				<h1>Hall of Kings!</h1>
-				<table>
-					<tr>
-						<th>Name</th>
-						<th>Price Paid</th>
-						<th>Date</th>
-					</tr>
-					{this.state.kings.map(king => {
-						return <tr key={king.coronationDate}>
-							<td>{king.name} <br /><small>{king.walletAddress}</small></td>
-							<td>{king.pricePaid} FTM</td>
-							<td>{king.coronationDate.toLocaleString()}</td>
-						</tr>;
-					})}
-				</table>
+				<HallOfKingsTable kings={this.state.kings} />
 
 				<h1>⚔️ Overthrow t'e King! ⚔️</h1>
 
-				<p>Current price to become a Pirate King: <span className="king-price">{parseFloat(this.state.thronePrice).toPrecision(3)}</span> FTM.</p>
-				{this.state.currentKingName !== '' && <p>Current Pirate King: {this.state.currentKingName}</p>}
-				<input disabled={this.state.walletName !== ''} type="text" onChange={this.handleNameInput} placeholder="Name..." value={this.state.walletName} />
-				<input type="number" onChange={this.handlePriceInput} min={parseFloat(this.state.thronePrice)} placeholder="Price in FTM..." />
-				<button className="btn-buy-throne" onClick={this.handleOverthrow}>Overthrow!</button>
+				<OverthrowKingSection
+					thronePrice={this.state.thronePrice}
+					currentKingName={this.state.currentKingName}
+					walletName={this.state.walletName}
+					handleNameInput={this.handleNameInput}
+					handlePriceInput={this.handlePriceInput}
+					handleOverthrow={this.handleOverthrow} />
 
-				<p hidden="false" className="transaction-pending-banner">You're request for the throne has been received!</p>
-				<p hidden="true" className="success-banner">You are now the new Pirate King!</p>
-
-				<div className="only-owner" hidden="true">
-					<input className="new-initial-king-price-input" type="number" placeholder="e.g. 12 will set it to 12 FTM" />
-					<button className="btn-change-initial-king-price">Change initial King Price (in FTM)</button>
+				<div hidden={true}>
+					<input type="number" placeholder="Price..." onChange={this.handleChangeStartPriceInput} />
+					<button className="btn" onClick={this.changeInitialPrice}>Change initial King Price (in FTM)</button>
 				</div>
 				<hr />
 				<div className="disclaimer-section">
