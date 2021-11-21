@@ -29,8 +29,8 @@ export default class Profile extends Component {
 	}
 
 	async componentDidMount() {
-		this.subscribeToEvents()
-		await this.loadNumberOfPirates()
+		this.subscribeToEvents();
+		await this.loadNumberOfPirates();
 	}
 
 	async subscribeToEvents() {

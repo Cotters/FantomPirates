@@ -3,6 +3,11 @@
       16 0, auto;
 }
 
+#hall-of-pirates {
+  background-color: #111111aa;
+  /*background-color: #d2aa77;*/
+}
+
 @media(min-width:760px) {
   #hall-of-pirates body {
     max-width: 80%;
@@ -14,6 +19,10 @@
 #hall-of-pirates p, tr, th, a, span, small {
   font-family: 'Cardo', serif;
   font-size: 18px;
+}
+
+#hall-of-pirates p, span, small {
+  margin: 1.5em auto;
 }
 
 #hall-of-pirates .warning-label {
@@ -91,7 +100,7 @@
 }
 
 #hall-of-pirates .disclaimer-section {
-  background-color: #000a;
+  background-color: #0008;
 }
 
 #hall-of-pirates .disclaimer-section>p {
