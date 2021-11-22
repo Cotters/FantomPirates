@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { Link } from "react-router-dom";
 
 import Dropdown from './components/Dropdown';
 import ErrorBox from './components/ErrorBox';
+
+
 
 import web3 from '../blockchain/web3';
 import game from '../blockchain/game';
@@ -38,7 +41,7 @@ export default class PirateBay extends Component {
 			for (let i = 0; i<numberOfPiratesOwned; i++) {
 				pirateIds.push(await game.methods.tokenOfOwnerByIndex(account, i).call());
 			}
-			this.setState({ pirateIds, selectedPirateId: pirateIds[0] });
+			this.setState({ pirateIds });
 		} catch (error) {
 			console.error(error);
 		}
@@ -67,21 +70,26 @@ export default class PirateBay extends Component {
 	render() {
 		return (
 			<div className="page-content" id="pirate-bay-content">
-				<h1>The Pirate Bay</h1>
+				<h1>The Pirate Bay<br /><small>Enjoy your stay 🍺</small></h1>
 
 				<ErrorBox
 					errorMessage={this.state.errorMessage}
 					onCloseTapped={this.hideError} />
 
-				<Dropdown
-					numberOfItems={this.state.pirateIds.length}
-					onItemSelected={this.onPirateSelected} />
+				{this.state.pirateIds.length > 0 ? 
+					<Dropdown
+						numberOfItems={this.state.pirateIds.length}
+						onItemSelected={this.onPirateSelected} />
+						:
+					<p>You must <Link className="btn" to="/profile">Mint a pirate</Link> before you can use the Pirate Bay!</p>
+				}
 
 				{this.state.selectedPirateId != null && 
 					<div>
 						<p>Welcome Pirate #{this.state.selectedPirateId}</p>
+						{/* TODO: Disable if Pirate.level < 2 */}
 						<button className="btn" onClick={this.buyShip}>Buy a ship!</button>
-						<p>Coming soon...</p>
+						<p>More coming soon...</p>
 					</div>
 				}
 			</div>

@@ -148,7 +148,7 @@ export default class HallOfKings extends Component {
 	render() {
 		return (
 			<div className="page-content" id="hall-of-pirates">
-				<h1>Hall of Pirate Kings! <small>Enjoy your stay 🍺</small></h1>
+				<h1>Fantom Pirate Kings!</h1>
 
 				<p>Do you have what it takes to be a Fantom Pirate King? Pay the current price of the throne to become the new King! The previous - now overthrown - King will be compensated by the price you paid.</p>
 				<p>Beware of the curse: After 14 days of being King, you will be struck down and the throne will be empty - ready to be claimed at the inital price of {this.state.initialThronePrice} FTM.</p>
