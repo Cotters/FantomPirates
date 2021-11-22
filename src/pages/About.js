@@ -14,7 +14,7 @@ export default class About extends Component {
 					<li>Go on quests and earn gold</li>
 					<li>Level up your pirates</li>
 					<li>Buy a ship!</li>
-					<li>Trade <Link to="/bay">at the pirate bay</Link> (coming soon)</li>
+					<li>Trade at the <Link to="/bay">Pirate Bay</Link> (coming soon)</li>
 					<li>Write your name on the Fantom Pirates <Link to="/hall-of-kings">Hall of Kings</Link></li>
 				</ul>
 				<p><Link className="btn" to="/profile">Mint a pirate</Link> to begin!</p>

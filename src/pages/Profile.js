@@ -160,9 +160,9 @@ export default class Profile extends Component {
 					errorMessage={this.state.errorMessage}
 					onCloseTapped={this.hideError} />
 
-				<Dropdown
+				{this.state.numberOfPiratesOwned > 0 && <Dropdown
 					numberOfItems={this.state.numberOfPiratesOwned}
-					onItemSelected={this.onItemSelected} />
+					onItemSelected={this.onItemSelected} />}
 
 				{this.state.selectedPirate && <PirateCard 
 					pirate={this.state.selectedPirate} 

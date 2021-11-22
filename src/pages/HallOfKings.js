@@ -81,6 +81,7 @@ export default class HallOfKings extends Component {
 	async populateKings() {
 		try {
 			let allKings = await kingsContract.methods.getAllKings().call();
+			if (allKings === null) return
       let kings = [];
       for(var i = 1; i < allKings.length; i++) {
         let kingObject = allKings[i];
@@ -97,13 +98,13 @@ export default class HallOfKings extends Component {
 	}
 
 	async convertFromWei(amount) {
-		if (amount === 0 || amount === '')
+		if (amount === 0 || amount === null || amount === '')
 			return 0;
     return web3.utils.fromWei(amount.toString());
   }
 
   async convertToWei(amount) {
-  	if (amount === 0 || amount === '') 
+  	if (amount === 0 || amount === null || amount === '') 
 			return 0;
     return web3.utils.toWei(amount.toString());
   }

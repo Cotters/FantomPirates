@@ -55,7 +55,6 @@ export default class PirateBay extends Component {
 		} catch(error) {
 			let errorObject = JSON.parse(error.message.substring(error.message.indexOf("\n") + 1));
 			const key = Object.keys(errorObject.data)[0];
-			console.error(errorObject.data[key].reason);
 			this.setState({errorMessage: errorObject.data[key].reason});
 
 		}
