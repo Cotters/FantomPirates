@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
-import SelectPirateDropdown from './components/SelectPirateDropdown';
+import Dropdown from './components/Dropdown';
+import ErrorBox from './components/ErrorBox';
 
 import web3 from '../blockchain/web3';
 import game from '../blockchain/game';
@@ -21,6 +22,7 @@ export default class PirateBay extends Component {
 		this.loadNumberOfPirates = this.loadNumberOfPirates.bind(this);
 		this.onPirateSelected = this.onPirateSelected.bind(this);
 		this.buyShip = this.buyShip.bind(this);
+		this.hideError = this.hideError.bind(this);
 	}
 
 	async componentDidMount() {
@@ -42,9 +44,9 @@ export default class PirateBay extends Component {
 		}
 	}
 
-	async onPirateSelected(pirateId) {
-		if (pirateId == null) return
-		this.setState({selectedPirateId: pirateId});
+	async onPirateSelected(index) {
+		if (index == null) return
+		this.setState({selectedPirateId: this.state.pirateIds[index]});
 	}
 
 	async buyShip() {
@@ -59,15 +61,23 @@ export default class PirateBay extends Component {
 		}
 	}
 
+	async hideError() {
+		this.setState({errorMessage: null});
+	}
+
 	render() {
 		return (
 			<div className="page-content" id="pirate-bay-content">
 				<h1>The Pirate Bay</h1>
-				{ this.state.errorMessage != null && <p className="error-message">Error: { this.state.errorMessage }</p> }
-				<SelectPirateDropdown
-					pirateIds={this.state.pirateIds}
-					onPirateSelected={this.onPirateSelected} />
-				
+
+				<ErrorBox
+					errorMessage={this.state.errorMessage}
+					onCloseTapped={this.hideError} />
+
+				<Dropdown
+					numberOfItems={this.state.pirateIds.length}
+					onItemSelected={this.onPirateSelected} />
+
 				{this.state.selectedPirateId != null && 
 					<div>
 						<p>Welcome Pirate #{this.state.selectedPirateId}</p>

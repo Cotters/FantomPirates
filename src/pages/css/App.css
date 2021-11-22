@@ -37,10 +37,6 @@ p, tr, th, a, li, span, small, button {
   color: #eee;
 }
 
-a, p {
-  margin: 2em 0;
-}
-
 .btn {
   background-color: #111;
   text-decoration: none;
@@ -62,4 +58,18 @@ a, p {
   margin: 0.75em auto;
   padding: 0.25em 1em;
   border-radius: 0.25em;
+}
+
+.btn-close {
+  color: #fff;
+  background-color: #111e;
+  border: none;
+  margin: 0.75em 0.5em;
+  padding: 0.1em 0.25em;
+  /*border-radius: 0.25em;*/
+}
+
+.btn-close:hover {
+  cursor: pointer;
+  color: #ffbbbb;
 }

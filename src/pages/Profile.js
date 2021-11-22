@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import PiratesList from './components/PiratesList';
 import MintPirateButton from './components/MintPirateButton';
+import Dropdown from './components/Dropdown';
+import PirateCard from './components/PirateCard';
+import SuccessBox from './components/SuccessBox';
+import ErrorBox from './components/ErrorBox';
 
 import web3 from '../blockchain/web3';
 import game from '../blockchain/game';
@@ -15,22 +18,31 @@ export default class Profile extends Component {
 		account: web3.currentProvider.selectedAddress,
 		numberOfPiratesOwned: 0,
 		pirates: [Pirate],
+		pirateIds: [],
+		selectedPirate: null,
 		successMessage: null,
 		errorMessage: null,
 	}
 
 	constructor(props) {
 		super(props);
+		this.refreshPage = this.refreshPage.bind(this);
 		this.handleMintPiratePressed = this.handleMintPiratePressed.bind(this);
 		this.handleDoQuestPressed = this.handleDoQuestPressed.bind(this);
 		this.handleLevelUpPressed = this.handleLevelUpPressed.bind(this);
 		this.subscribeToEvents = this.subscribeToEvents.bind(this);
 		this.loadNumberOfPirates = this.loadNumberOfPirates.bind(this);
+		this.onItemSelected = this.onItemSelected.bind(this);
+		this.hideError = this.hideError.bind(this);
 	}
 
 	async componentDidMount() {
 		this.subscribeToEvents();
 		await this.loadNumberOfPirates();
+	}
+
+	async refreshPage() {
+		window.location.reload();
 	}
 
 	async subscribeToEvents() {
@@ -47,7 +59,7 @@ export default class Profile extends Component {
 		const account = web3.currentProvider.selectedAddress;
 		if (account == null) return;
 		try {
-			const numberOfPiratesOwned = await game.methods.balanceOf(account).call();
+			const numberOfPiratesOwned = parseInt(await game.methods.balanceOf(account).call());
 			this.setState({ numberOfPiratesOwned })
 			this.getPirateInformation(numberOfPiratesOwned)
 		} catch (error) {
@@ -57,9 +69,11 @@ export default class Profile extends Component {
 	
 	async getPirateInformation(numberOfPirates) {
 		let pirates = [];
+		let pirateIds = [];
 		const account = web3.currentProvider.selectedAddress;
 		for (let i = 0; i<numberOfPirates; i++) {
 			let pirateId = await game.methods.tokenOfOwnerByIndex(account, i).call();
+			pirateIds.push(pirateId);
 			let level = await game.methods.level(pirateId).call();
 			let xp = await game.methods.xp(pirateId).call();
 			let nextLevelXp = await game.methods.requiredXpForLevel(level).call();
@@ -67,12 +81,17 @@ export default class Profile extends Component {
 			let questTimeout = await game.methods.quests_log(pirateId).call();
 			pirates.push(Pirate(pirateId, level, parseFloat(xp), parseFloat(nextLevelXp), parseFloat(gold), questTimeout*1000));
 		}
-		this.setState({ pirates });
+		let selectedPirate = pirates[0]
+		if (this.state.selectedPirate !== null) {
+			selectedPirate = this.state.selectedPirate;
+		}
+		this.setState({ pirates, pirateIds, selectedPirate });
 	}
 
 	async handleMintPiratePressed() {
 		try {
     	await game.methods.mintPirate().send({from: this.state.account});
+    	this.loadNumberOfPirates();
 		} catch(error) {
 			console.error(error.message);
 			// TODO: Fix this...
@@ -87,6 +106,7 @@ export default class Profile extends Component {
   async handleDoQuestPressed(pirateId) {
   	try {
   		await game.methods.doQuest(pirateId).send({from: this.state.account});
+  		this.loadNumberOfPirates();
   	} catch(error) {
   		// TODO: Fix this... :S
   		const errorObject = JSON.parse(error.message.substring(49, error.message.length-1).trim());
@@ -100,6 +120,7 @@ export default class Profile extends Component {
   async handleLevelUpPressed(pirateId) {
   	try {
   		await game.methods.levelUp(pirateId).send({from: this.state.account});
+  		this.getPirateInformation()
   	} catch(error) {
   		// TODO: And fix this...
   		// console.log(error.message.substring(49, error.message.length-1).trim());
@@ -113,6 +134,15 @@ export default class Profile extends Component {
   	}
   }
 
+  async onItemSelected(index) {
+  	if (index == null) return;
+  	this.setState({selectedPirate: this.state.pirates[index]})
+  }
+
+  async hideError() {
+  	this.setState({ errorMessage: null })
+  }
+
 	render() {
 		return (
 			<div className="page-content">
@@ -122,13 +152,22 @@ export default class Profile extends Component {
 						 onButtonPress={this.handleMintPiratePressed} />
 				</h1>
 
-				{ this.state.successMessage != null && <p className="success-message">Success: { this.state.successMessage }</p> }
-				{ this.state.errorMessage != null && <p className="error-message">Error: { this.state.errorMessage }</p> }
+				<SuccessBox
+					successMessage={this.state.successMessage}
+					onCloseTapped={this.hideError} />
+				
+				<ErrorBox
+					errorMessage={this.state.errorMessage}
+					onCloseTapped={this.hideError} />
 
-				{this.state.pirates.count !== 0 && <PiratesList
-					pirates={this.state.pirates} 
-					onQuestPressed={this.handleDoQuestPressed}
-					onLevelUpPressed={this.handleLevelUpPressed} /> }
+				<Dropdown
+					numberOfItems={this.state.numberOfPiratesOwned}
+					onItemSelected={this.onItemSelected} />
+
+				{this.state.selectedPirate && <PirateCard 
+					pirate={this.state.selectedPirate} 
+					onQuestPressed={this.handleDoQuestPressed} 
+					onLevelUpPressed={this.handleLevelUpPressed} />}
 				
 			</div>
 		);

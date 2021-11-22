@@ -121,6 +121,7 @@ export default class HallOfKings extends Component {
 		e.preventDefault();
 		try {
 			await kingsContract.methods.becomeKing(this.state.inputtedName).send({ from: this.state.account, value: this.state.inputtedPrice });
+			this.componentDidMount()
 		} catch(error) {
 			console.error(error);
 		}

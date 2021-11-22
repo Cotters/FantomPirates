@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-import './css/SelectPirateDropdown.css'
+import './css/SelectPirateDropdown.css';
 
-const SelectPirateDropdown = ({pirateIds, onPirateSelected}) => {
+const Dropdown = ({numberOfItems, onItemSelected}) => {
   
   const [isOpened, setIsOpened] = useState(false);
 
@@ -10,9 +10,9 @@ const SelectPirateDropdown = ({pirateIds, onPirateSelected}) => {
     setIsOpened(wasOpened => !wasOpened);
   }
 
-  function handleSelection(e, pirateId) {
+  function handleSelection(e, index) {
     toggleDropdown();
-    onPirateSelected(pirateId);
+    onItemSelected(index);
   }
 
   return (
@@ -22,8 +22,8 @@ const SelectPirateDropdown = ({pirateIds, onPirateSelected}) => {
           <div className="dropdown-list">
             <hr />
             {
-              pirateIds.map((id) => {
-                return <button onClick={(e) => handleSelection(e, id)}>Pirate #{id}</button>
+              [...Array(numberOfItems)].map((x, y) => y).map((index) => {
+                return <button key={index} onClick={(e) => handleSelection(e, index)}>Pirate #{index+1}</button>
               })
             }
           </div>
@@ -32,4 +32,4 @@ const SelectPirateDropdown = ({pirateIds, onPirateSelected}) => {
   );
 }
 
-export default SelectPirateDropdown;
+export default Dropdown;
