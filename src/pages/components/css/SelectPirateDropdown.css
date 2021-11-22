@@ -1,0 +1,38 @@
+.dropdown {
+	width: 150px;
+	margin: 0 auto;
+	background-color: #111a;
+	border: 1px solid #aaa;
+}
+
+.btn-dropdown {
+	padding: 0.4em;
+	/*border: 1px solid #aaa;*/
+}
+.btn-dropdown:hover {
+	cursor: pointer;
+}
+
+.dropdown-list * {
+	display: block;
+}
+
+.dropdown-list hr {
+	border: 0.5px dashed #aaa;
+	/*margin: 0 1em;*/
+	margin-top: 0;
+	margin-bottom: 0.25em;
+}
+
+.dropdown-list button {
+	margin-top: 0.25em;
+	background: none;
+	border: none;
+	color: white;
+	margin: 0.1em 0.5em;
+	font-size: 18px;
+}
+
+.dropdown-list button:hover {
+	cursor: pointer;
+}

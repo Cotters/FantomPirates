@@ -96,6 +96,10 @@
   padding: 0.3em;
 }
 
+#hall-of-pirates input:disabled {
+  border: 0px solid #fff;
+}
+
 #hall-of-pirates .transaction-pending-banner {
   background:#ffdd8a;
   width: 50%;

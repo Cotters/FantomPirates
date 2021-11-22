@@ -2,7 +2,7 @@ import React from 'react';
 
 const PirateQuestButton = ({pirateId, questTimeout, onQuestPressed}) => {
 
-	const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+	// const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 	function canQuest() {
 		let nextQuestTimestamp = questTimeout

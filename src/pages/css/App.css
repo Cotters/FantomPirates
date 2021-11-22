@@ -28,11 +28,11 @@ body {
     width: 60%;
   }
 }
-h1,h2,h3,h4,h5,h6, button {
+h1,h2,h3,h4,h5,h6 {
   font-family: 'Berkshire Swash';
 }
 
-p, tr, th, a, li, span, small {
+p, tr, th, a, li, span, small, button {
   font-family: 'Cardo', serif;
   color: #eee;
 }
@@ -57,4 +57,9 @@ a, p {
 
 .error-message {
   color: #dd0000;
+  background-color: #111e;
+  width: fit-content;
+  margin: 0.75em auto;
+  padding: 0.25em 1em;
+  border-radius: 0.25em;
 }
