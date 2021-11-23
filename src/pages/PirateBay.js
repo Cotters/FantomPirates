@@ -3,12 +3,10 @@ import { Link } from "react-router-dom";
 
 import Dropdown from './components/Dropdown';
 import ErrorBox from './components/ErrorBox';
-
-
+import DonationButton from './components/DonationButton';
 
 import web3 from '../blockchain/web3';
 import game from '../blockchain/game';
-
 
 import './css/PirateBay.css';
 
@@ -63,6 +61,14 @@ export default class PirateBay extends Component {
 		}
 	}
 
+	async buyBeer() {
+		try {
+			await game.methods.donate(1).call({value: 1**18});
+		} catch(error) {
+			console.error(error);
+		}
+	}
+
 	async hideError() {
 		this.setState({errorMessage: null});
 	}
@@ -90,8 +96,13 @@ export default class PirateBay extends Component {
 						{/* TODO: Disable if Pirate.level < 2 */}
 						<button className="btn" onClick={this.buyShip}>Buy a ship!</button>
 						<p>More coming soon...</p>
+
 					</div>
 				}
+				<DonationButton
+					buttonText={"Buy a beer!"}
+					message={"(This is a donation (of 1 FTM) to the dev - but be warned, your pirate may get drunk!)"}
+					onClick={this.buyBeer} />
 			</div>
 		);
 	}

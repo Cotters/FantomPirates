@@ -9,6 +9,7 @@ import "./FantomPiratesGold.sol";
 contract FantomPiratesGame is ERC721Enumerable {
 
   address public owner = msg.sender;
+  uint public donations = 0;
 
   uint public next_pirate_id = 1;
   uint public next_ship_id = 1;
@@ -98,5 +99,14 @@ contract FantomPiratesGame is ERC721Enumerable {
       _required_xp += (i * xp_per_quest);
     }
     return _required_xp;
+  }
+
+  function donate(uint _amount) public payable {
+    donations += _amount;
+  }
+
+  function withdrawAll() public {
+    require(msg.sender == owner);
+    payable(owner).transfer(address(this).balance);
   }
 }
