@@ -20,8 +20,8 @@ contract FantomPiratesGame is ERC721Enumerable {
   uint constant xp_per_quest = 250;
   uint constant gold_per_quest = 100;
 
-  uint constant gold_for_ship = 1500;
-  uint constant gold_for_pet = 3000;
+  uint public constant gold_for_ship = 1500;
+  uint public constant gold_for_pet = 3000;
   
   mapping(uint => uint) public level;
   mapping(uint => uint) public xp;

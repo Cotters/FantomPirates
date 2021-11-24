@@ -1,3 +1,4 @@
+import React from 'react';
 import NavigationBar from './components/NavigationBar'
 
 import { Switch, Route } from 'react-router-dom';
@@ -11,8 +12,11 @@ import HallOfKings from './HallOfKings';
 
 import './css/App.css';
 
-function App() {
+import PiratesContext from './components/contexts/PiratesContext';
+
+const App = () => {
   return (
+    <PiratesContext.Provider value="Cpt. Jack">
     <div>
       <NavigationBar contractAddress = {game._address} />
       <Switch>
@@ -22,6 +26,7 @@ function App() {
         <Route exact path="/hall-of-kings" component={HallOfKings} />
       </Switch> 
     </div>
+    </PiratesContext.Provider>
   );
 }
 

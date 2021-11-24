@@ -12,6 +12,7 @@ const NavigationBar = (props) => {
 				<li><Link to="/bay">The Pirate Bay</Link></li>
 				<li><Link to="/profile">Profile</Link></li>
 				<li><Link to="/hall-of-kings">Hall of Kings</Link></li>
+				
 			</ul>
 			<ul id="nav-float-right">
 				<li id="contract-link"><a href={`https://ftmscan.com/address/${props.contractAddress}`}>Contract Address</a></li>

@@ -14,6 +14,8 @@ export default class PirateBay extends Component {
 
 	state = {
 		pirateIds: [],
+		piratesGold: 0,
+		shipPrice: 0,
 		selectedPirateId: null,
 		errorMessage: null,
 	}
@@ -21,6 +23,7 @@ export default class PirateBay extends Component {
 	constructor() {
 		super();
 		this.loadNumberOfPirates = this.loadNumberOfPirates.bind(this);
+		this.getShipPrice = this.getShipPrice.bind(this);
 		this.onPirateSelected = this.onPirateSelected.bind(this);
 		this.buyShip = this.buyShip.bind(this);
 		this.hideError = this.hideError.bind(this);
@@ -28,6 +31,7 @@ export default class PirateBay extends Component {
 
 	async componentDidMount() {
 		await this.loadNumberOfPirates();
+		await this.getShipPrice();
 	}
 
 	async loadNumberOfPirates() {
@@ -48,6 +52,15 @@ export default class PirateBay extends Component {
 	async onPirateSelected(index) {
 		if (index == null) return
 		this.setState({selectedPirateId: this.state.pirateIds[index]});
+	}
+
+	async getShipPrice() {
+		try {
+			let shipPrice = (await game.methods.gold_for_ship().call());
+			this.setState({ shipPrice });
+		} catch(error) {
+			console.log(error);
+		}
 	}
 
 	async buyShip() {
@@ -92,9 +105,9 @@ export default class PirateBay extends Component {
 
 				{this.state.selectedPirateId != null && 
 					<div>
-						<p>Welcome Pirate #{this.state.selectedPirateId}</p>
+						<p>Welcome Pirate #{this.state.selectedPirateId}. You have 💰{this.state.piratesGold} gold.</p>
 						{/* TODO: Disable if Pirate.level < 2 */}
-						<button className="btn" onClick={this.buyShip}>Buy a ship!</button>
+						<p><button className="btn" onClick={this.buyShip}>Buy a ship!</button> (💰{this.state.shipPrice} gold)</p>
 						<p>More coming soon...</p>
 
 					</div>
