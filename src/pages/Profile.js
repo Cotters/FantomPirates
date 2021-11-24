@@ -18,10 +18,10 @@ export default class Profile extends Component {
 		account: web3.currentProvider.selectedAddress,
 		numberOfPiratesOwned: 0,
 		pirates: [Pirate],
-		pirateIds: [],
 		selectedPirate: null,
 		successMessage: null,
 		errorMessage: null,
+		didUpdatePirate: null,
 	}
 
 	constructor(props) {
@@ -61,7 +61,7 @@ export default class Profile extends Component {
 		try {
 			const numberOfPiratesOwned = parseInt(await game.methods.balanceOf(account).call());
 			this.setState({ numberOfPiratesOwned })
-			this.getPirateInformation(numberOfPiratesOwned)
+			await this.getPirateInformation(numberOfPiratesOwned)
 		} catch (error) {
 			console.error(error);
 		}
@@ -69,23 +69,21 @@ export default class Profile extends Component {
 	
 	async getPirateInformation(numberOfPirates) {
 		let pirates = [];
-		let pirateIds = [];
 		const account = web3.currentProvider.selectedAddress;
 		for (let i = 0; i<numberOfPirates; i++) {
-			let pirateId = await game.methods.tokenOfOwnerByIndex(account, i).call();
-			pirateIds.push(pirateId);
-			let level = await game.methods.level(pirateId).call();
-			let xp = await game.methods.xp(pirateId).call();
-			let nextLevelXp = await game.methods.requiredXpForLevel(level).call();
-			let gold = await game.methods.gold(pirateId).call();
-			let questTimeout = await game.methods.quests_log(pirateId).call();
-			pirates.push(Pirate(pirateId, level, parseFloat(xp), parseFloat(nextLevelXp), parseFloat(gold), questTimeout*1000));
+			let pirateId = parseInt(await game.methods.tokenOfOwnerByIndex(account, i).call());
+			let level = parseInt(await game.methods.level(pirateId).call());
+			let xp = await parseInt(await game.methods.xp(pirateId).call());
+			let nextLevelXp = parseInt(await game.methods.requiredXpForLevel(level+1).call());
+			let gold = parseInt(await game.methods.gold(pirateId).call());
+			let questTimeout = parseFloat(await game.methods.quests_log(pirateId).call());
+			pirates.push(Pirate(pirateId, level, xp, nextLevelXp, gold, questTimeout*1000));
 		}
 		let selectedPirate = pirates[0]
 		if (this.state.selectedPirate !== null) {
 			selectedPirate = this.state.selectedPirate;
 		}
-		this.setState({ pirates, pirateIds, selectedPirate });
+		this.setState({ pirates, selectedPirate });
 	}
 
 	async handleMintPiratePressed() {
@@ -106,7 +104,7 @@ export default class Profile extends Component {
   async handleDoQuestPressed(pirateId) {
   	try {
   		await game.methods.doQuest(pirateId).send({from: this.state.account});
-  		this.loadNumberOfPirates();
+  		// TODO: Refresh
   	} catch(error) {
   		// TODO: Fix this... :S
   		const errorObject = JSON.parse(error.message.substring(49, error.message.length-1).trim());
@@ -164,7 +162,8 @@ export default class Profile extends Component {
 					numberOfItems={this.state.numberOfPiratesOwned}
 					onItemSelected={this.onItemSelected} />}
 
-				{this.state.selectedPirate && <PirateCard 
+				{this.state.selectedPirate && <PirateCard
+					didUpdatePirate={this.state.didUpdatePirate}
 					pirate={this.state.selectedPirate} 
 					onQuestPressed={this.handleDoQuestPressed} 
 					onLevelUpPressed={this.handleLevelUpPressed} />}

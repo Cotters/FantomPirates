@@ -1,8 +1,6 @@
 import React from 'react';
 
-const PirateQuestButton = ({pirateId, questTimeout, onQuestPressed}) => {
-
-	// const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const PirateQuestButton = ({ pirateId, questTimeout, onQuestPressed }) => {
 
 	function canQuest() {
 		let nextQuestTimestamp = questTimeout
@@ -14,9 +12,6 @@ const PirateQuestButton = ({pirateId, questTimeout, onQuestPressed}) => {
 		if (canQuest())
 			return "Now!";
 		return new Date(questTimeout).toLocaleString();;
-		// let dayMonth = months[date.getMonth()] + " " + date.getDate();
-		// let hourMinutes = date.getHours() + ":" + date.getMinutes();
-		// return dayMonth + ", " + hourMinutes;
 	}
 
 	function handleQuestPressed(e, pirateId) {
@@ -28,7 +23,7 @@ const PirateQuestButton = ({pirateId, questTimeout, onQuestPressed}) => {
 
   return (
     <div>
-    	<button className="btn" disabled={isDisabled} type="submit" onClick={e => handleQuestPressed(e, pirateId)}>Send on a quest</button>
+    	<button className="btn" disabled={isDisabled} onClick={e => handleQuestPressed(e, pirateId)}>Send on a quest</button>
 			{isDisabled && <small>Next quest available: {formattedQuestTimeout()}</small>}
     </div>
   )

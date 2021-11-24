@@ -77,8 +77,11 @@ contract FantomPiratesGame is ERC721Enumerable {
   }
 
   function doQuest(uint _pirate_id) public payable {
-    require(block.timestamp > quests_log[_pirate_id], "You must wait a day before your next quest!");
-    quests_log[_pirate_id] = block.timestamp + DAY;
+    
+    // **** TODO: Revert this! This is just for testing purposes ****
+
+    // require(block.timestamp > quests_log[_pirate_id], "You must wait a day before your next quest!");
+    // quests_log[_pirate_id] = block.timestamp;// + DAY;
     xp[_pirate_id] += xp_per_quest;
     gold[_pirate_id] += gold_per_quest;
   }

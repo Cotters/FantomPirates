@@ -59,9 +59,11 @@ contract("Game - Pirates", async accounts => {
 			await gameInstance.doQuest(1);
 			await timeMachine.advanceTimeAndBlock(oneDay);
 		}
+		assert.equal(1500, await gameInstance.xp.call(1), "Pirate did not loose XP when leveling up");
 		let result = await gameInstance.levelUp(1);
 		assert.equal(2, await gameInstance.level.call(1), "Pirate was not allowed to level up or leveled too high");
 		truffleAssert.eventEmitted(result, 'Leveled');
+		assert.equal(0, await gameInstance.xp.call(1), "Pirate did not loose XP when leveling up");
 	});
 
 	it("should not allow pirate to level up when required XP not attained", async () => {

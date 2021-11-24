@@ -99,6 +99,8 @@ export default class PirateBay extends Component {
 
 					</div>
 				}
+
+				<hr />
 				<DonationButton
 					buttonText={"Buy a beer!"}
 					message={"(This is a donation (of 1 FTM) to the dev - but be warned, your pirate may get drunk!)"}
