@@ -17,8 +17,8 @@ contract FantomPiratesGame is ERC721Enumerable {
 
   uint constant DAY = 1 days;
 
-  uint constant xp_per_quest = 250;
-  uint constant gold_per_quest = 100;
+  uint constant xp_per_quest = 10250; // TODO: Revert to 250 after testing.
+  uint constant gold_per_quest = 10000; // TODOL Revert to 100 after testing.
 
   uint public constant gold_for_ship = 1500;
   uint public constant gold_for_pet = 3000;
