@@ -44,6 +44,9 @@ export default class PirateBay extends Component {
 				pirateIds.push(await game.methods.tokenOfOwnerByIndex(account, i).call());
 			}
 			this.setState({ pirateIds });
+      if (pirateIds.length > 0) {
+        this.onPirateSelected(0);
+      }
 		} catch (error) {
 			console.error(error);
 		}
@@ -51,7 +54,11 @@ export default class PirateBay extends Component {
 
 	async onPirateSelected(index) {
 		if (index == null) return
-		this.setState({selectedPirateId: this.state.pirateIds[index]});
+    const pirateId = this.state.pirateIds[index];
+		this.setState({
+      selectedPirateId: pirateId,
+      piratesGold: parseInt(await game.methods.gold(pirateId).call()),
+    });
 	}
 
 	async getShipPrice() {

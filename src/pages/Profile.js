@@ -67,67 +67,59 @@ export default class Profile extends Component {
 		}
 	}
 	
-	async getPirateInformation(numberOfPirates) {
-		let pirates = [];
-		const account = web3.currentProvider.selectedAddress;
-		for (let i = 0; i<numberOfPirates; i++) {
-			let pirateId = parseInt(await game.methods.tokenOfOwnerByIndex(account, i).call());
-			let level = parseInt(await game.methods.level(pirateId).call());
-			let xp = await parseInt(await game.methods.xp(pirateId).call());
-			let nextLevelXp = parseInt(await game.methods.requiredXpForLevel(level+1).call());
-			let gold = parseInt(await game.methods.gold(pirateId).call());
-			let questTimeout = parseFloat(await game.methods.quests_log(pirateId).call());
-			pirates.push(Pirate(pirateId, level, xp, nextLevelXp, gold, questTimeout*1000));
-		}
-		let selectedPirate = pirates[0]
-		if (this.state.selectedPirate !== null) {
-			selectedPirate = this.state.selectedPirate;
-		}
-		this.setState({ pirates, selectedPirate });
-	}
+async getPirateInformation(numberOfPirates) {
+  const piratePromises = [];
+  const account = web3.currentProvider.selectedAddress;
+  for (let i = 0; i < numberOfPirates; i++) {
+    let pirateId = parseInt(await game.methods.tokenOfOwnerByIndex(account, i).call());
+    piratePromises.push(this.getInformationOfPirateWithId(pirateId));
+  }
+  const pirates = await Promise.all(piratePromises);
+  const selectedPirate = this.state.selectedPirate || pirates[0];
+  this.setState({ pirates, selectedPirate });
+}
+
+  async getInformationOfPirateWithId(pirateId) {
+    let level = parseInt(await game.methods.level(pirateId).call());
+    let xp = parseInt(await game.methods.xp(pirateId).call());
+    let nextLevelXp = parseInt(await game.methods.requiredXpForLevel(level + 1).call());
+    let gold = parseInt(await game.methods.gold(pirateId).call());
+    let questTimeout = parseFloat(await game.methods.quests_log(pirateId).call());
+    return Pirate(pirateId, level, xp, nextLevelXp, gold, questTimeout * 1000);
+  }
 
 	async handleMintPiratePressed() {
 		try {
     	await game.methods.mintPirate().send({from: this.state.account});
     	this.loadNumberOfPirates();
 		} catch(error) {
-			console.error(error.message);
-			// TODO: Fix this...
-			const errorDataObject = JSON.parse(error.message.substring(24).trim()).data;
-			const key = Object.keys(errorDataObject)[0];
-			const errorMessage = errorDataObject[key].reason;
-    	// const errorMessage = (errorDataObject == null) ? error.message : errorDataObject[key].reason;
+      const errorMessage = error.message;
+      if (errorMessage.includes("User denied transaction")) return;
 			this.setState({ errorMessage });
 		}
   }
 
   async handleDoQuestPressed(pirateId) {
-  	try {
-  		await game.methods.doQuest(pirateId).send({from: this.state.account});
-  		// TODO: Refresh
-  	} catch(error) {
-  		// TODO: Fix this... :S
-  		const errorObject = JSON.parse(error.message.substring(49, error.message.length-1).trim());
-  		const errorDataObject = errorObject.value.data.data;
-  		const key = Object.keys(errorDataObject)[0];
-			const errorMessage = errorDataObject[key].reason;
-			this.setState({ errorMessage });
-  	}
+    try {
+      await game.methods.doQuest(pirateId).send({ from: this.state.account });
+      this.loadNumberOfPirates();
+      const pirateInfo = await this.getInformationOfPirateWithId(pirateId);
+      this.setState({ selectedPirate: pirateInfo });
+    } catch (error) {
+      const errorMessage = error.message;
+      if (errorMessage.includes("User denied transaction")) return;
+      this.setState({ errorMessage });
+    }
   }
 
   async handleLevelUpPressed(pirateId) {
   	try {
   		await game.methods.levelUp(pirateId).send({from: this.state.account});
-  		this.getPirateInformation()
+  		const pirateInfo = await this.getInformationOfPirateWithId(pirateId);
+      this.setState({ selectedPirate: pirateInfo });
   	} catch(error) {
-  		// TODO: And fix this...
-  		// console.log(error.message.substring(49, error.message.length-1).trim());
-  		const errorObject = JSON.parse(error.message.substring(49, error.message.length-1).trim());
-  		console.log(errorObject);
-  		const errorDataObject = errorObject.value.data.data;
-  		console.log(errorDataObject);
-  		const key = Object.keys(errorDataObject)[0];
-			const errorMessage = errorDataObject[key].reason;
+  		const errorMessage = error.message;
+      if (errorMessage.includes("User denied transaction")) return;
 			this.setState({ errorMessage });
   	}
   }

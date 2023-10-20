@@ -70,7 +70,7 @@ contract FantomPiratesGame is ERC721Enumerable {
     uint256 numberOfPiratesOwned = balanceOf(msg.sender);
     require(_pirate_id != 0 && numberOfPiratesOwned > 0, "You must own a pirate before you can own a pet!");
     require(pet[_pirate_id] == 0, "Your pirate can only own one pet!");
-    require(gold[_pirate_id] >= gold_for_pet, "Your pirate does not hold enough gold to be buy a ship!");
+    require(gold[_pirate_id] >= gold_for_pet, "Your pirate does not hold enough gold to be own a pet!");
     next_pet_id++;
     gold[_pirate_id] -= gold_for_pet;
     ship[_pirate_id] = _next_pet_id;
