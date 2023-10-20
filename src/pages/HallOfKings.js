@@ -151,10 +151,8 @@ export default class HallOfKings extends Component {
 				<h1>Fantom Pirate Kings!</h1>
 
 				<p>Do you have what it takes to be a Fantom Pirate King? Pay the current price of the throne to become the new King! The previous - now overthrown - King will be compensated by the price you paid.</p>
-				<p>Beware of the curse: After 14 days of being King, you will be struck down and the throne will be empty - ready to be claimed at the inital price of {this.state.initialThronePrice} FTM.</p>
-
-				<p>Do you have what it takes to be a Fantom Pirate King? Pay the current price of the throne to become the new King! The previous - now overthrown - King will be compensated by the price you paid.</p>
-				<p>Beware of the curse: After 14 days of being King, you will be struck down and the throne will be empty - ready to be claimed at the inital price of {this.state.initialThronePrice} FTM.</p>
+        <h3><u>Beware of the curse</u></h3>
+        <p>After 14 days of being King, you will be struck down and the throne will be empty - ready to be claimed at the inital price of {this.state.initialThronePrice} FTM.</p>
 				<p>Any King will be added to the...</p>
 
 				<HallOfKingsTable kings={this.state.kings} />
