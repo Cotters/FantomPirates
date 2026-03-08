@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 
-import web3 from '../blockchain/web3';
-import kingsContract from '../blockchain/kings';
-
 import HallOfKingsTable from './components/HallOfKingsTable';
 import OverthrowKingSection from './components/OverthrowKingSection';
 
@@ -15,7 +12,6 @@ const King = (name, walletAddress, pricePaid, coronationDate) => {
 export default class HallOfKings extends Component {
 	
 	state = {
-		account: web3.currentProvider.selectedAddress,
 		kings: [],
 		initialThronePrice: 0,
 		thronePrice: 0,
@@ -35,8 +31,8 @@ export default class HallOfKings extends Component {
 		this.handleOverthrow = this.handleOverthrow.bind(this);
 		this.getCurrentKingName = this.getCurrentKingName.bind(this);
 		this.getWalletName = this.getWalletName.bind(this);
-		this.convertFromWei = this.convertFromWei.bind(this);
-		this.convertToWei = this.convertToWei.bind(this);
+		// this.convertFromWei = this.convertFromWei.bind(this);
+		// this.convertToWei = this.convertToWei.bind(this);
 		this.isOwner = this.isOwner.bind(this);
 	}
 
@@ -52,9 +48,9 @@ export default class HallOfKings extends Component {
 
 	async getThronePrice() {
 		try {
-			let initialThronePrice = await this.convertFromWei(await kingsContract.methods.startPriceToBeKing().call());
-			let thronePrice = await this.convertFromWei(await kingsContract.methods.currentPriceToBeKing().call());
-			this.setState({initialThronePrice, thronePrice, inputtedPrice: thronePrice})
+			// let initialThronePrice = await this.convertFromWei(await kingsContract.methods.startPriceToBeKing().call());
+			// let thronePrice = await this.convertFromWei(await kingsContract.methods.currentPriceToBeKing().call());
+			// this.setState({initialThronePrice, thronePrice, inputtedPrice: thronePrice})
 		} catch(error) {
 			console.error(error);
 		}
@@ -62,8 +58,8 @@ export default class HallOfKings extends Component {
 
 	async getCurrentKingName() {
 		try {
-			let currentKingName = await kingsContract.methods.getCurrentKingName().call();
-			this.setState({currentKingName});
+			// let currentKingName = await kingsContract.methods.getCurrentKingName().call();
+			// this.setState({currentKingName});
 		} catch(error) {
 			console.error(error);
 		}
@@ -71,44 +67,32 @@ export default class HallOfKings extends Component {
 
 	async getWalletName() {
 		try {
-			let walletName = await kingsContract.methods.getNameForAddress().call({from: this.state.account});
-			this.setState({walletName, inputtedName: walletName});
+			// let walletName = await kingsContract.methods.getNameForAddress().call({from: this.state.account});
+			// this.setState({walletName, inputtedName: walletName});
 		} catch(error) {
 			console.error(error);
 		}
 	}
 
 	async populateKings() {
-		try {
-			let allKings = await kingsContract.methods.getAllKings().call();
-			if (allKings === null) return
-      let kings = [];
-      for(var i = 1; i < allKings.length; i++) {
-        let kingObject = allKings[i];
-        var walletAddress = kingObject[0];
-        let name = kingObject[1];
-        let coronationDate = new Date(kingObject[2] * 1000);
-        let pricePaid = parseFloat(await this.convertFromWei(kingObject[3])).toPrecision(4);
-        kings.push(King(name, walletAddress, pricePaid, coronationDate.toLocaleString()));
-      }
-      this.setState({kings})
-		} catch(error) {
-			console.error(error);
-		}
+		return;
+	// 	try {
+	// 		let allKings = await kingsContract.methods.getAllKings().call();
+	// 		if (allKings === null) return
+    //   let kings = [];
+    //   for(var i = 1; i < allKings.length; i++) {
+    //     let kingObject = allKings[i];
+    //     var walletAddress = kingObject[0];
+    //     let name = kingObject[1];
+    //     let coronationDate = new Date(kingObject[2] * 1000);
+    //     let pricePaid = parseFloat(await this.convertFromWei(kingObject[3])).toPrecision(4);
+    //     kings.push(King(name, walletAddress, pricePaid, coronationDate.toLocaleString()));
+    //   }
+    //   this.setState({kings})
+	// 	} catch(error) {
+	// 		console.error(error);
+	// 	}
 	}
-
-	async convertFromWei(amount) {
-		if (amount === 0 || amount === null || amount === '')
-			return 0;
-    return web3.utils.fromWei(amount.toString());
-  }
-
-  async convertToWei(amount) {
-  	if (amount === 0 || amount === null || amount === '') 
-			return 0;
-    return web3.utils.toWei(amount.toString());
-  }
-
   handleNameInput = event => {
     this.setState({ inputtedName: event.target.value });
   };
@@ -121,7 +105,7 @@ export default class HallOfKings extends Component {
 	async handleOverthrow(e) {
 		e.preventDefault();
 		try {
-			await kingsContract.methods.becomeKing(this.state.inputtedName).send({ from: this.state.account, value: this.state.inputtedPrice });
+			// await kingsContract.methods.becomeKing(this.state.inputtedName).send({ from: this.state.account, value: this.state.inputtedPrice });
 			this.componentDidMount()
 		} catch(error) {
 			console.error(error);
@@ -136,14 +120,14 @@ export default class HallOfKings extends Component {
 	async changeInitialPrice(e) {
 		e.preventDefault();
 		try {
-			let newStartPrice = await this.convertToWei(this.state.inputtedStartPrice);
-			await kingsContract.methods.changeStartPrice(newStartPrice).send({ from: this.state.account });
+			// let newStartPrice = await this.convertToWei(this.state.inputtedStartPrice);
+			// await kingsContract.methods.changeStartPrice(newStartPrice).send({ from: this.state.account });
 		} catch(error) {
 			console.error(error);
 		}
 	}
 
-	isOwner = async () => await kingsContract.methods.isSenderOwner().call();
+	isOwner = async () => false//await kingsContract.methods.isSenderOwner().call();
 
 	render() {
 		return (

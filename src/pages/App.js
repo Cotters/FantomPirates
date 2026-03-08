@@ -3,8 +3,6 @@ import NavigationBar from './components/NavigationBar'
 
 import { Switch, Route } from 'react-router-dom';
 
-import game from '../blockchain/game';
-
 import About from './About';
 import PirateBay from './PirateBay';
 import Profile from './Profile';
@@ -18,7 +16,7 @@ const App = () => {
   return (
     <PiratesContext.Provider value="Cpt. Jack">
     <div>
-      <NavigationBar contractAddress = {game._address} />
+      <NavigationBar />
       <Switch>
         <Route exact path="/" component={About} />
         <Route exact path="/bay" component={PirateBay} />

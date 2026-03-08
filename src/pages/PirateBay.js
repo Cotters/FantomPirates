@@ -5,9 +5,6 @@ import Dropdown from './components/Dropdown';
 import ErrorBox from './components/ErrorBox';
 import DonationButton from './components/DonationButton';
 
-import web3 from '../blockchain/web3';
-import game from '../blockchain/game';
-
 import './css/PirateBay.css';
 
 export default class PirateBay extends Component {
@@ -35,21 +32,22 @@ export default class PirateBay extends Component {
 	}
 
 	async loadNumberOfPirates() {
-		const account = web3.currentProvider.selectedAddress;
-		if (account === null) return;
-		try {
-			const numberOfPiratesOwned = await game.methods.balanceOf(account).call();
-			let pirateIds = [];
-			for (let i = 0; i<numberOfPiratesOwned; i++) {
-				pirateIds.push(await game.methods.tokenOfOwnerByIndex(account, i).call());
-			}
-			this.setState({ pirateIds });
-      if (pirateIds.length > 0) {
-        this.onPirateSelected(0);
-      }
-		} catch (error) {
-			console.error(error);
-		}
+		return;
+	// 	const account = web3.currentProvider.selectedAddress;
+	// 	if (account === null) return;
+	// 	try {
+	// 		const numberOfPiratesOwned = await game.methods.balanceOf(account).call();
+	// 		let pirateIds = [];
+	// 		for (let i = 0; i<numberOfPiratesOwned; i++) {
+	// 			pirateIds.push(await game.methods.tokenOfOwnerByIndex(account, i).call());
+	// 		}
+	// 		this.setState({ pirateIds });
+    //   if (pirateIds.length > 0) {
+    //     this.onPirateSelected(0);
+    //   }
+	// 	} catch (error) {
+	// 		console.error(error);
+	// 	}
 	}
 
 	async onPirateSelected(index) {
@@ -57,14 +55,14 @@ export default class PirateBay extends Component {
     const pirateId = this.state.pirateIds[index];
 		this.setState({
       selectedPirateId: pirateId,
-      piratesGold: parseInt(await game.methods.gold(pirateId).call()),
+    //   piratesGold: parseInt(await game.methods.gold(pirateId).call()),
     });
 	}
 
 	async getShipPrice() {
 		try {
-			let shipPrice = (await game.methods.gold_for_ship().call());
-			this.setState({ shipPrice });
+			// let shipPrice = (await game.methods.gold_for_ship().call());
+			// this.setState({ shipPrice });
 		} catch(error) {
 			console.log(error);
 		}
@@ -72,7 +70,7 @@ export default class PirateBay extends Component {
 
 	async buyShip() {
 		try {
-			await game.methods.mintShip(this.state.selectedPirateId).call();
+			// await game.methods.mintShip(this.state.selectedPirateId).call();
 		} catch(error) {
 			let errorObject = JSON.parse(error.message.substring(error.message.indexOf("\n") + 1));
 			const key = Object.keys(errorObject.data)[0];
@@ -83,7 +81,7 @@ export default class PirateBay extends Component {
 
 	async buyBeer() {
 		try {
-			await game.methods.donate(1).call({value: 1**18});
+			// await game.methods.donate(1).call({value: 1**18});
 		} catch(error) {
 			console.error(error);
 		}

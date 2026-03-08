@@ -5,9 +5,6 @@ import PirateCard from './components/PirateCard';
 import SuccessBox from './components/SuccessBox';
 import ErrorBox from './components/ErrorBox';
 
-import web3 from '../blockchain/web3';
-import game from '../blockchain/game';
-
 const Pirate = (id, level, xp, nextLevelXp, gold, questTimeout) => {
 	return { id, level, xp, nextLevelXp, gold, questTimeout };
 };
@@ -15,7 +12,7 @@ const Pirate = (id, level, xp, nextLevelXp, gold, questTimeout) => {
 export default class Profile extends Component {
 
 	state = {
-		account: web3.currentProvider.selectedAddress,
+		// account: web3.currentProvider.selectedAddress,
 		numberOfPiratesOwned: 0,
 		pirates: [Pirate],
 		selectedPirate: null,
@@ -56,72 +53,72 @@ export default class Profile extends Component {
 	}
 
 	async loadNumberOfPirates() {
-		const account = web3.currentProvider.selectedAddress;
-		if (account == null) return;
-		try {
-			const numberOfPiratesOwned = parseInt(await game.methods.balanceOf(account).call());
-			this.setState({ numberOfPiratesOwned })
-			await this.getPirateInformation(numberOfPiratesOwned)
-		} catch (error) {
-			console.error(error);
-		}
+		// const account = web3.currentProvider.selectedAddress;
+		// if (account == null) return;
+		// try {
+		// 	const numberOfPiratesOwned = parseInt(await game.methods.balanceOf(account).call());
+		// 	this.setState({ numberOfPiratesOwned })
+		// 	await this.getPirateInformation(numberOfPiratesOwned)
+		// } catch (error) {
+		// 	console.error(error);
+		// }
 	}
 	
 async getPirateInformation(numberOfPirates) {
-  const piratePromises = [];
-  const account = web3.currentProvider.selectedAddress;
-  for (let i = 0; i < numberOfPirates; i++) {
-    let pirateId = parseInt(await game.methods.tokenOfOwnerByIndex(account, i).call());
-    piratePromises.push(this.getInformationOfPirateWithId(pirateId));
-  }
-  const pirates = await Promise.all(piratePromises);
-  const selectedPirate = this.state.selectedPirate || pirates[0];
-  this.setState({ pirates, selectedPirate });
+//   const piratePromises = [];
+//   const account = web3.currentProvider.selectedAddress;
+//   for (let i = 0; i < numberOfPirates; i++) {
+//     let pirateId = parseInt(await game.methods.tokenOfOwnerByIndex(account, i).call());
+//     piratePromises.push(this.getInformationOfPirateWithId(pirateId));
+//   }
+//   const pirates = await Promise.all(piratePromises);
+//   const selectedPirate = this.state.selectedPirate || pirates[0];
+//   this.setState({ pirates, selectedPirate });
 }
 
   async getInformationOfPirateWithId(pirateId) {
-    let level = parseInt(await game.methods.level(pirateId).call());
-    let xp = parseInt(await game.methods.xp(pirateId).call());
-    let nextLevelXp = parseInt(await game.methods.requiredXpForLevel(level + 1).call());
-    let gold = parseInt(await game.methods.gold(pirateId).call());
-    let questTimeout = parseFloat(await game.methods.quests_log(pirateId).call());
-    return Pirate(pirateId, level, xp, nextLevelXp, gold, questTimeout * 1000);
+    // let level = parseInt(await game.methods.level(pirateId).call());
+    // let xp = parseInt(await game.methods.xp(pirateId).call());
+    // let nextLevelXp = parseInt(await game.methods.requiredXpForLevel(level + 1).call());
+    // let gold = parseInt(await game.methods.gold(pirateId).call());
+    // let questTimeout = parseFloat(await game.methods.quests_log(pirateId).call());
+    // return Pirate(pirateId, level, xp, nextLevelXp, gold, questTimeout * 1000);
   }
 
 	async handleMintPiratePressed() {
-		try {
-    	await game.methods.mintPirate().send({from: this.state.account});
-    	this.loadNumberOfPirates();
-		} catch(error) {
-      const errorMessage = error.message;
-      if (errorMessage.includes("User denied transaction")) return;
-			this.setState({ errorMessage });
-		}
+	// 	try {
+    // 	await game.methods.mintPirate().send({from: this.state.account});
+    // 	this.loadNumberOfPirates();
+	// 	} catch(error) {
+    //   const errorMessage = error.message;
+    //   if (errorMessage.includes("User denied transaction")) return;
+	// 		this.setState({ errorMessage });
+	// 	}
   }
 
   async handleDoQuestPressed(pirateId) {
-    try {
-      await game.methods.doQuest(pirateId).send({ from: this.state.account });
-      this.loadNumberOfPirates();
-      const pirateInfo = await this.getInformationOfPirateWithId(pirateId);
-      this.setState({ selectedPirate: pirateInfo });
-    } catch (error) {
-      const errorMessage = error.message;
-      if (errorMessage.includes("User denied transaction")) return;
-      this.setState({ errorMessage });
-    }
+    // try {
+    //   await game.methods.doQuest(pirateId).send({ from: this.state.account });
+    //   this.loadNumberOfPirates();
+    //   const pirateInfo = await this.getInformationOfPirateWithId(pirateId);
+    //   this.setState({ selectedPirate: pirateInfo });
+    // } catch (error) {
+    //   const errorMessage = error.message;
+    //   if (errorMessage.includes("User denied transaction")) return;
+    //   this.setState({ errorMessage });
+    // }
   }
 
   async handleLevelUpPressed(pirateId) {
-  	try {
-  		await game.methods.levelUp(pirateId).send({from: this.state.account});
-  		const pirateInfo = await this.getInformationOfPirateWithId(pirateId);
-      this.setState({ selectedPirate: pirateInfo });
-  	} catch(error) {
-  		const errorMessage = error.message;
-      if (errorMessage.includes("User denied transaction")) return;
-			this.setState({ errorMessage });
-  	}
+  	// try {
+  	// 	await game.methods.levelUp(pirateId).send({from: this.state.account});
+  	// 	const pirateInfo = await this.getInformationOfPirateWithId(pirateId);
+    //   this.setState({ selectedPirate: pirateInfo });
+  	// } catch(error) {
+  	// 	const errorMessage = error.message;
+    //   if (errorMessage.includes("User denied transaction")) return;
+	// 		this.setState({ errorMessage });
+  	// }
   }
 
   async onItemSelected(index) {

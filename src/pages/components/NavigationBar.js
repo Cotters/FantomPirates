@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import './css/Navigation.css';
 
 const NavigationBar = (props) => {
-	
 	return (
 		<div className="navigation-bar">
 			<ul id="nav-float-left">
@@ -15,7 +14,7 @@ const NavigationBar = (props) => {
 				
 			</ul>
 			<ul id="nav-float-right">
-				<li id="contract-link"><a href={`https://ftmscan.com/address/${props.contractAddress}`}>Contract Address</a></li>
+				<li id="contract-link"><a href="https://x.com/jorocopi">Contract Address</a></li>
 			</ul>
 		</div>
 	);
